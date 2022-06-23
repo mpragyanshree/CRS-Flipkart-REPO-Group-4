@@ -8,8 +8,8 @@ public interface SemesterRegistrationInterface {
     public boolean registerCourses(String studentId, int Semester);
     public boolean addCourse(String studentId, int Semester, String CourseId, boolean isPrimary);
     public boolean dropCourse(String studentId, int Semester, String CourseId);
-    public HashMap<String,Course> viewCourseCatalog();
+    public ArrayList<Course> viewCourseCatalog();
     public void viewRegisteredCourses(String studentId, int Semester);
-    public boolean payFee(String studentId);
+    public Boolean checkPaymentWindow(String StudentID);
 
 }

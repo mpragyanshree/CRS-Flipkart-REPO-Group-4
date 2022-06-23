@@ -1,20 +1,25 @@
 package com.flipkart.bean;
 
+import java.time.LocalTime;
+import java.sql.Time;
+
 public class FeePayment {
     private String paymentId;
-    private String paymentStatus;
+    private Boolean paymentStatus;
     private int amount;
     private int sem;
     private String studentId;
     private String paymentMode;
+    private Time paymentTime;
 
-    public FeePayment(String paymentId, String paymentStatus, int amount, int sem, String studentId, String paymentMode) {
+    public FeePayment(String paymentId, Boolean paymentStatus, int amount, int sem, String studentId, String paymentMode, Time paymentTime) {
         this.paymentId = paymentId;
         this.paymentStatus = paymentStatus;
         this.amount = amount;
         this.sem = sem;
         this.studentId = studentId;
         this.paymentMode=paymentMode;
+        this.paymentTime=paymentTime;
     }
 
     public FeePayment() {}
@@ -35,11 +40,11 @@ public class FeePayment {
         this.paymentId = paymentId;
     }
 
-    public String getPaymentStatus() {
+    public Boolean getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
+    public void setPaymentStatus(Boolean paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
@@ -65,6 +70,14 @@ public class FeePayment {
 
     public void setStudentId(String studentId) {
         this.studentId = studentId;
+    }
+
+    public Time getPaymentTime() {
+        return paymentTime;
+    }
+
+    public void setPaymentTime(Time paymentTime) {
+        this.paymentTime = paymentTime;
     }
 
 

@@ -21,20 +21,8 @@ import com.sun.javaws.progress.PreloaderDelegate;
 
 public class CRSProfessor {
 
-
-    Set<Professor> pf = new HashSet<Professor>();
-    ArrayList<String> ProfCourses = new ArrayList<String>();
     public CRSProfessor() {
-        Professor p1= new Professor("101","aayush","professor","kyakaru",null,"aayush1564","cse","dean");
-        pf.add(p1);
-        Professor p2= new Professor("102","yash","professor","kyakaru",null,"yash1564","cse","dean-acad");
-        pf.add(p2);
-        Professor p3= new Professor("105","yuvi","professor","kyakaru",null,"yash1564","cse","guard");
-        pf.add(p3);
-        Professor p4= new Professor("107","sneha","professor","kyakaru",null,"yash1564","cse","dean-sports");
-        pf.add(p4);
-        Professor p5= new Professor("201","anchal","professor","kyakaru",null,"yash1564","cse","director");
-        pf.add(p5);
+
 
     }
 
@@ -64,6 +52,7 @@ public class CRSProfessor {
                 System.out.println("Choose an option : ");
                 System.out.println("1 : View registered students");
                 System.out.println("2 : Add Grade");
+
                 System.out.println("3 : Show Registered courses");
                 System.out.println("4 : Register for a course");
                 System.out.println("5 : Logout");
@@ -75,7 +64,7 @@ public class CRSProfessor {
                 switch(menuOption) {
                     case 1 :
                         // View list of enrolled students for a course in a given semester.
-                        viewEnrolledStudents();
+                        viewRegisteredStudents();
                         break;
 
                     case 2 :
@@ -84,17 +73,17 @@ public class CRSProfessor {
                         break;
 
                     case 3:
-                        // View list of courses in with professor is associated.
+                        // Professor opt-in for a course.
                         viewRegisteredCourses();
                         break;
 
                     case 4:
-                        // Professor opt-in for a course.
                         registerCourses();
-                        break;
 
-                    case 5:
-                        return;
+                    case 5 :
+                        return ;
+
+
                     default:
                         System.out.println("Invalid input");
                 }
@@ -105,50 +94,7 @@ public class CRSProfessor {
         }
     }
 
-    private void registerCourses() {
-        Integer semesterID;
-        String courseID;
-        System.out.println("Enter course ID: ");
-        courseID = sc.nextLine();
-        System.out.println("Enter Semester ID: ");
-        semesterID = sc.nextInt();
-        sc.nextLine();
-        ProfCourses.add(courseID);
-        profObj.registerCourses(professorID,courseID, semesterID);
-    }
-
-    private void viewRegisteredCourses() {
-        System.out.println(ProfCourses);
-
-
-    }
-
-    private void addGrade(){
-
-        String courseID;
-        Integer grade,studentID,semesterID;
-        System.out.println("Enter student ID: ");
-        studentID = sc.nextInt();
-        sc.nextLine();
-        System.out.println("Enter Semester ID: ");
-        semesterID = sc.nextInt();
-        System.out.println("Enter course ID: ");
-        sc.nextLine();
-        courseID = sc.nextLine();
-        System.out.println("Enter Grade: ");
-        grade = sc.nextInt();
-        sc.nextLine();
-        if(true) {
-            profObj.addGrade();
-        }
-        else{
-//            logger.error("Invalid Grade!!");
-            System.out.println("invalid grade");
-        }
-
-    }
-
-    private void viewEnrolledStudents(){
+    private void viewRegisteredStudents(){
 
         String courseID;
         int semesterID;
@@ -160,7 +106,7 @@ public class CRSProfessor {
 
         try {
             if(true){
-                profObj.viewEnrolledStudents();
+                profObj.viewRegisteredStudents();
             }
             else{
 //                logger.error("Invalid Semester");
@@ -174,10 +120,59 @@ public class CRSProfessor {
 
     }
 
+    private void registerCourses() {
+        Integer semesterID;
+        String courseID;
+        System.out.println("Enter course ID: ");
+        courseID = sc.nextLine();
+        System.out.println("Enter Semester ID: ");
+        semesterID = sc.nextInt();
+        sc.nextLine();
+        profObj.registerCourse(professorID,courseID, semesterID);
+    }
+
+    private void viewRegisteredCourses() {
+
+        Integer semesterID;
+        System.out.println("Enter Semester ID: ");
+        semesterID = sc.nextInt();
+
+        profObj.viewRegisteredCourses(semesterID);
+
+
+    }
+
+    private void addGrade(){
+
+        String courseID,grade;
+        Integer studentID,semesterID;
+        System.out.println("Enter student ID: ");
+        studentID = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Enter Semester ID: ");
+        semesterID = sc.nextInt();
+        System.out.println("Enter course ID: ");
+        sc.nextLine();
+        courseID = sc.nextLine();
+        System.out.println("Enter Grade: ");
+        grade = sc.nextLine();
+        sc.nextLine();
+        if(true) {
+            profObj.addGrade(studentID,courseID,grade,semesterID);
+        }
+        else{
+//            logger.error("Invalid Grade!!");
+            System.out.println("invalid grade");
+        }
+
+    }
+
+
+
     // Get ID of professor by providing username.
     private String getProfessorID(String username){
 
-        ProfessorInterface po = new ProfessorImplementation();
+        ProfessorInterface pf = new ProfessorImplementation();
         try {
             for (Professor s : pf) {
                 if(s.getName() == username)

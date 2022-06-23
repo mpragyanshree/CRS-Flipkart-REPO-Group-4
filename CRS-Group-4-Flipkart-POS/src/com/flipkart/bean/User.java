@@ -7,15 +7,19 @@ public class User {
     private String userId;
     private String name;
     private String role;
+
     private String password;
+    private String address;
+    private String contactnum;
 
-
-    public User(String userId, String name, String role, String password, Date joiningDate) {
+    public User(Date joiningDate, String userId, String name, String role, String password, String address, String contactnum) {
+        this.joiningDate = joiningDate;
         this.userId = userId;
         this.name = name;
         this.role = role;
         this.password = password;
-        this.joiningDate = joiningDate;
+        this.address = address;
+        this.contactnum = contactnum;
     }
 
     public User()
@@ -23,6 +27,21 @@ public class User {
 
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getContactnum() {
+        return contactnum;
+    }
+
+    public void setContactnum(String contactnum) {
+        this.contactnum = contactnum;
+    }
 
     public String getUserId() {
         return userId;

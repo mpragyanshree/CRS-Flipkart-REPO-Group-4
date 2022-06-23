@@ -150,10 +150,11 @@ public class CRSStudent {
         }
     }
 
+
     // Function to redirect on payment portal depending on the payment choice made.
     private void payRegistrationFee() {
 
-        if (sro.payFee(studentID)){ //check payment window is up or not and student registered or not, then proceed for payment
+        if (sro.checkPaymentWindow(studentID)){ //check payment window is up or not and student registered or not, then proceed for payment
             Scanner sc = new Scanner(System.in);
             FeePayment payment = new FeePayment();
             PaymentImplementation po = new PaymentImplementation();
@@ -165,9 +166,7 @@ public class CRSStudent {
                 if(!finishedRegistration) {
                     throw new Exception("You registration is incomplete!");
                 }
-                System.out.println("Payment successful");
-                return ;
-/*
+
                 System.out.println("=======================================");
                 System.out.println("Choose a Payment type : ");
                 System.out.println("---------------------------------------");
@@ -210,7 +209,7 @@ public class CRSStudent {
                         return;
                 }
 
-                po.makePayment(payment);*/
+                po.makePayment(payment);
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -271,11 +270,19 @@ public class CRSStudent {
     }
 
     private void viewAvailableCourses() {
-        HashMap<String, Course> courseCatalog = null;
+        /* HashMap<String, Course> courseCatalog = null;
         courseCatalog = sro.viewCourseCatalog();
         System.out.println("Course catalog : \n");
         for (HashMap.Entry<String, Course> entry : courseCatalog.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue().getCourseCode() + " " + entry.getValue().getCourseName() + " " + entry.getValue().getInstructorId() + " " + entry.getValue().isAvailable());
+        }*/
+
+        ArrayList<Course> courseCatalog = null;
+        courseCatalog = sro.viewCourseCatalog();
+
+        System.out.println("Course catalog : ");
+        for(Course c : courseCatalog) {
+            System.out.println("Course ID : "+c.getCourseCode() +"\t Available seats : "+c.getNumberOfSeats()+" \t Instructor : "+c.getInstructorId()+" \t Course Name : "+ c.getCourseName());
         }
     }
 

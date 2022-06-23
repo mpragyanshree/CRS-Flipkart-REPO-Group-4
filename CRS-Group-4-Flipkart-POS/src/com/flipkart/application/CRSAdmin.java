@@ -1,12 +1,17 @@
 package com.flipkart.application;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import com.flipkart.bean.Grade;
+
+import com.flipkart.bean.*;
 import com.flipkart.service.AdminImplementation;
+import com.flipkart.service.AdminInterface;
+
 public class CRSAdmin {
     private Scanner sc = new Scanner(System.in);
-    AdminImplementation aro = new AdminImplementation();
+    AdminInterface ao = (AdminInterface) AdminImplementation.getInstance();
+
     public void createAdminMenu (String adminId){
         System.out.println("*************Admin Menu**************");
         System.out.println("--------------------------------------");
@@ -83,7 +88,6 @@ public class CRSAdmin {
     }
     private void editCourseDetails(){
         try {
-
             while(true) {
                 System.out.println("=======================================");
                 System.out.println("Options : ");
@@ -127,26 +131,33 @@ public class CRSAdmin {
 
         try{
             String course_name, courseID, courseInstructor;
-            int offeredSemester;
-
+            int numOfSeats;
             System.out.println("=======================================");
             System.out.println("Kindly enter course details below");
             System.out.println("Course Name: ");
             course_name = sc.nextLine();
             System.out.println("Course ID: ");
             courseID = sc.nextLine();
-            System.out.println("Semester: ");
-            offeredSemester = sc.nextInt();
-            sc.nextLine();
-            System.out.println("Instructor for the course: ");
+            System.out.println("InstructorId for the course: ");
             courseInstructor = sc.nextLine();
-
-//            ao.addCourse(course_name, courseID, offeredSemester, courseInstructor);
-            System.out.println("Course added successfully!!! Returning you to main menu");
-            TimeUnit.SECONDS.sleep(3);
+            System.out.println("Number of seats available");
+            numOfSeats = sc.nextInt();
+            sc.nextLine();
+            Course crs = ao.addCourse(courseID,course_name,courseInstructor,numOfSeats);
+            //Student stud = so.registerStudent(studentId, name, password, department, formatter.parse(joiningDate),address,contactnum);
+            if(crs == null) {
+                System.out.println("Course Was not added");
+                System.out.println("=======================================");
+            }
+            else {
+                System.out.println("Course Added Successfully!");
+                System.out.println("=======================================");
+            }
+            //Student stud = so.registerStudent(studentId, name, password, department, formatter.parse(joiningDate),address,contactnum);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return;
     }
     private void removeCourse() {
         String courseID;
@@ -154,11 +165,9 @@ public class CRSAdmin {
         System.out.println("Enter course ID for course removal: ");
         courseID = sc.nextLine();
         System.out.println("Course removed successfully!!! Returning you to main menu");
-
-
         try {
             TimeUnit.SECONDS.sleep(3);
-//            ao.removeCourse(courseID);
+            ao.removeCourse(courseID);
             // remove course
         } catch (Exception e) {
 //            logger.error(e.getMessage());
@@ -169,25 +178,23 @@ public class CRSAdmin {
 
         try{
             String course_name, courseID, courseInstructor;
-            int offeredSemester;
-
+            int numOfSeats;
             System.out.println("=======================================");
             System.out.println("Kindly enter the course ID for updation");
-
             System.out.print("Course ID: ");
             courseID = sc.nextLine();
             // search course based on course ID
             System.out.println("Please enter the updated details below");
             System.out.print("Course Name: ");
             course_name = sc.nextLine();
-            System.out.print("Semester: ");
-            offeredSemester = sc.nextInt();
+            System.out.print("Number of seats: ");
+            numOfSeats = sc.nextInt();
             sc.nextLine();
             System.out.print("Instructor for the course: ");
             courseInstructor = sc.nextLine();
             // update course details here
 
-//            ao.updateCourse(course_name, courseID, offeredSemester, courseInstructor);
+            ao.updateCourse(course_name, courseID, numOfSeats, courseInstructor);
             System.out.println("Course updated successfully!!! Returning you to main menu");
             TimeUnit.SECONDS.sleep(3);
         } catch (Exception e) {
@@ -239,8 +246,8 @@ public class CRSAdmin {
 
         try {
 
-            String username, name, password, department, designation, contact;
-            Integer joiningYear;
+            String username, name, password, address, department, designation, contact;
+            String joiningDate;
 
             System.out.println("=======================================");
             System.out.println("Kindly enter new professor details");
@@ -257,17 +264,25 @@ public class CRSAdmin {
             designation = sc.nextLine();
             System.out.println("Contact Number");
             contact = sc.nextLine();
-            System.out.println("Joining Year");
-            joiningYear = sc.nextInt();
+            System.out.println("Address");
+            address = sc.nextLine();
+            System.out.println("Joining Date, Please enter in format dd-mm-yyyy");
+            joiningDate = sc.nextLine();
             sc.nextLine();
 
-            System.out.println("Professor added successfully!!! Returning you to main menu");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            Professor prof = ao.addProfessor(username, name, password, department, formatter.parse(joiningDate),address,contact);
+            if(prof == null) {
+                System.out.println("User Was not added");
+                System.out.println("=======================================");
+            }
+            else {
+                System.out.println("User Added Successfully!");
+                System.out.println("=======================================");
+            }
+
             TimeUnit.SECONDS.sleep(3);
             System.out.println("=======================================");
-
-
-            // add prof details - interface link
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -281,8 +296,7 @@ public class CRSAdmin {
 
 
         try {
-//            ao.removeProfessor(professorID);
-//            remove prof based on profID
+            ao.removeProfessor(professorID);
             System.out.println("Professor removed successfully!!! Returning you to main menu");
             TimeUnit.SECONDS.sleep(3);
 
@@ -294,51 +308,32 @@ public class CRSAdmin {
 
         try {
 
-            String username, name, password, department, designation, contact, profID;
-            Integer joiningYear;
+            String username, name, password, department, address, designation, contact;
+            String joiningDate;
 
             System.out.println("=======================================");
             System.out.println("Kindly enter professor ID for updating details");
             System.out.println("---------------------------------------");
-            profID = sc.nextLine();
-            //check prof id and fetch details, print details alongside.
-            System.out.println("For updating details, please enter new details. To keep the same information, please press enter at respective fields.");
-            System.out.println("User Name: ");
             username = sc.nextLine();
-            if (username.isEmpty()){
-                // fetch existing username
-            }
+            //check prof id and fetch details, print details alongside.
+            System.out.println("For updating details, please enter new details except professorid");
             System.out.println("Password: ");
             password = sc.nextLine();
-            if (password.isEmpty()){
-                // fetch existing password
-            }
             System.out.println("Name: ");
             name = sc.nextLine();
-            if (name.isEmpty()){
-                // fetch existing name
-            }
             System.out.println("Department: ");
             department = sc.nextLine();
-            if (department.isEmpty()){
-                // fetch existing department
-            }
             System.out.println("Designation: ");
             designation = sc.nextLine();
-            if (designation.isEmpty()){
-                // fetch existing designation
-            }
+            System.out.println("Address: ");
+            address = sc.nextLine();
             System.out.println("Contact Number");
             contact = sc.nextLine();
-            if (contact.isEmpty()){
-                // fetch existing contact
-            }
-            System.out.println("Joining Year (To keep the exisitng joining year, please enter 0");
-            joiningYear = sc.nextInt();
+            System.out.println("Joining date. Please enter in format dd-mm-yyyy");
+            joiningDate = sc.nextLine();
             sc.nextLine();
-            if (joiningYear == 0){
-                // fetch existing username
-            }
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            ao.updateProfessor(username, name, password, department, designation, address, contact, formatter.parse(joiningDate));
             System.out.println("Professor updated successfully!!! Returning you to main menu");
             TimeUnit.SECONDS.sleep(3);
             System.out.println("=======================================");
@@ -394,11 +389,10 @@ public class CRSAdmin {
         }
     }
     private void addAdmin(){
-
         try {
 
-            String username, name, password, contact;
-            Integer joiningYear;
+            String username, name, password, contact,address;
+            String joiningdate;
 
             System.out.println("=======================================");
             System.out.println("Kindly enter new admin details");
@@ -412,10 +406,21 @@ public class CRSAdmin {
 
             System.out.println("Contact Number");
             contact = sc.nextLine();
-            System.out.println("Joining Year");
-            joiningYear = sc.nextInt();
+            System.out.println("Address");
+            address = sc.nextLine();
+            System.out.println("Joining Date, Please add in format dd-mm-yyyy");
+            joiningdate = sc.nextLine();
             sc.nextLine();
-            System.out.println("Admin added successfully!!! Returning you to main menu");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            Admin ad = ao.addAdmin(username, name, password, contact, formatter.parse(joiningdate),address);
+            if(ad == null) {
+                System.out.println("User Was not added");
+                System.out.println("=======================================");
+            }
+            else {
+                System.out.println("User Added Successfully!");
+                System.out.println("=======================================");
+            }
             TimeUnit.SECONDS.sleep(3);
             System.out.println("=======================================");
 
@@ -426,16 +431,15 @@ public class CRSAdmin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
     private void removeAdmin() {
-        System.out.println("Enter Admin's user ID :");
-        String adminID = sc.nextLine();
-//        sc.nextLine();
+        System.out.println("Enter Admin's user ID to remove :");
+        String adminID;
+        adminID = sc.nextLine();
+        //sc.nextLine();
 
         try {
-//            ao.removeAdmin(adminID);
-//            remove admin based on userID
+            ao.removeAdmin(adminID); //remove admin based on userID
             System.out.println("Admin removed successfully!!! Returning you to main menu");
             TimeUnit.SECONDS.sleep(3);
 
@@ -447,51 +451,51 @@ public class CRSAdmin {
 
         try {
 
-            String username, name, password, department, designation, contact, profID;
-            Integer joiningYear;
+            String adminId, name, password, contact,address;
+            String joiningDate;
 
             System.out.println("=======================================");
             System.out.println("Kindly enter admin ID for updating details");
-            System.out.println("---------------------------------------");
-            profID = sc.nextLine();
-            //check prof id and fetch details, print details alongside.
-            System.out.println("For updating details, please enter new details. To keep the same information, please press enter at respective fields.");
-            System.out.println("User Name: ");
-            username = sc.nextLine();
-            if (username.isEmpty()){
-                // fetch existing username
-            }
-            System.out.println("Password: ");
+            System.out.println("=======================================");
+            adminId = sc.nextLine();
+            //check admin id and fetch details, print details alongside.
+            System.out.println("For updating details, please enter new details.");
+            System.out.println("Enter New Password: ");
             password = sc.nextLine();
-            if (password.isEmpty()){
+            /*if (password.isEmpty()){
                 // fetch existing password
-            }
+            }*/
             System.out.println("Name: ");
             name = sc.nextLine();
-            if (name.isEmpty()) {
+            /*if (name.isEmpty()) {
                 // fetch existing name
-            }
+            }*/
             System.out.println("Contact Number");
             contact = sc.nextLine();
-            if (contact.isEmpty()){
+            /*if (contact.isEmpty()){
                 // fetch existing contact
-            }
-            System.out.println("Joining Year (To keep the exisitng joining year, please enter 0");
-            joiningYear = sc.nextInt();
-            sc.nextLine();
-            if (joiningYear == 0){
-                // fetch existing username
-            }
+            }*/
+            System.out.println("Joining Date, Please add in format dd-mm-yyyy");
+            joiningDate = sc.nextLine();
+            /*if (joiningDate.isEmpty()){
+                // fetch existing joining date
+            }*/
+            System.out.println("Address");
+            address = sc.nextLine();
+            /*if (address.isEmpty()){
+                // fetch existing joining date
+            }*/
+            // add admin details - interface link
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            ao.updateAdmin(name, password, contact, formatter.parse(joiningDate),address);
             System.out.println("=======================================");
             System.out.println("Admin updated successfully!!! Returning you to main menu");
             TimeUnit.SECONDS.sleep(3);
 
-            // add admin details - interface link
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return;
 
     }
 
@@ -513,11 +517,11 @@ public class CRSAdmin {
         else if (a > 0 && a < 9){
             System.out.println("Payment window is now open!!! Returning you to main menu");
 
-//            ao.enableFeePayment(a);
+//            ao.enableFeePayment(sem);
         }
         else if (a == 0){
             System.out.println("Payment window is now closed!!! Returning you to main menu");
-//            ao.disableFeePayment(a);
+//            ao.disableFeePayment(sem);
         }
 
         else {
@@ -534,33 +538,35 @@ public class CRSAdmin {
 
     }
     private void viewAvailableCourses() {
-        // dummy setup
-        ArrayList<String> alcourse = new ArrayList<>();
-        alcourse.add("OS");
-        alcourse.add("DBMS");
-        alcourse.add("OOPS");
-        for (String val : alcourse) {
-            System.out.println(val);
+
+        ArrayList<Course> alcourse = ao.viewAvailableCourses();
+        for (Course val : alcourse) {
+            System.out.println("--------------------------");
+            System.out.println(val.getCourseCode());
+            System.out.println(val.getCourseName());
+            System.out.println(val.getInstructorId());
+            System.out.println(val.getNumberOfSeats());
         }
+        return;
 
 
     }
     private void approveStudentRegistration() {
-        int studentID,semester;
+        int semester;
+        String studentID;
         // fetch pending students data - dummy for now
 
         ArrayList<String> pendingstudents = new ArrayList<>();
-
-        pendingstudents.add("1801EE62");
-        pendingstudents.add("1801EE63");
-        pendingstudents.add("1801CS61");
+        pendingstudents = ao.viewPendingStudentApproval();
         int i;
         for (i = 0; i<pendingstudents.size(); i++) {
-            System.out.println(pendingstudents.get(i));
+            String studID = pendingstudents.get(i);
+            System.out.println(studID);
             System.out.println("Please press 1 to approve, else 0 to deny approval: ");
             int stat = sc.nextInt();
             sc.nextLine();
             if(stat == 1){
+                ao.approveStudentRegistration(studID);
                 pendingstudents.remove(i);
                 i--;
             }
@@ -574,7 +580,6 @@ public class CRSAdmin {
 
 
         }
-        // update student approval
         return;
 
 
@@ -583,31 +588,30 @@ public class CRSAdmin {
     private void viewCourseStudentList(){
         System.out.println("Please enter Course ID to view Student List");
         String courseID = sc.nextLine();
+        ArrayList<ArrayList<String>> course_students = ao.viewCourseStudentList(courseID);
+        System.out.println("Here is the list of students registered in course: " + courseID);
+        for (ArrayList<String> i: course_students){
+            System.out.println("Student ID" + i.get(0) + "Name : " + i.get(1));
+        }
         // fetch student list;
+        return;
 
 
     }
     private void viewCourseGrades(){
         System.out.println("Please enter Course ID to view Grades");
         String courseID = sc.nextLine();
-        HashMap<String, Grade> viewCourseGrades = aro.viewCourseGrades(courseID);
-        Iterator itr = viewCourseGrades.entrySet().iterator();
-        System.out.println("Viewing Grade for course: " +courseID);
-        System.out.println("Student ID        Grade ");
-        while(itr.hasNext()){
-            Map.Entry ele= (Map.Entry)itr.next();
-            Grade individualGrade = (Grade) ele.getValue();
-            String studID = (String) ele.getKey();
-            System.out.println(studID + "        " +individualGrade.getGrade());
+        ArrayList<ArrayList<String>> courseGrades = ao.viewCourseGrades(courseID);
+        System.out.println("Here is the grade of students registered in course: " + courseID);
+        for (ArrayList<String> i: courseGrades){
+            System.out.println("Student ID" + i.get(0) + "Grade : " + i.get(1));
         }
-        System.out.println("Enter any key to exit: ");
-        String flag = sc.nextLine();
-
+        return;
 
     }
 
     private void generateGradeCard() {
-
-
+        ao.generateGradeCard();
+        System.out.println("Grade Cards generated successfully, now available for students to view!");
     }
 }

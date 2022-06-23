@@ -5,6 +5,7 @@ public class Grade {
     private String courseId;
     private String courseName;
     private String grade;
+    private String StudentID;
 
     public Grade(String courseId, String courseName, String grade) {
         this.courseId = courseId;

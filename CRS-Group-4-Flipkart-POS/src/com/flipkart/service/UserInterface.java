@@ -3,7 +3,7 @@ package com.flipkart.service;
 
 public interface UserInterface {
 
-    public void updatePassword(String userId, String newPassword, String Role);
+    public void updatePassword(String userId, String newPassword);
     public boolean loginUser(String userId,String password, String role);
     public void updateUserDetails(String UserId,String Name);
 

@@ -68,8 +68,6 @@ public class CRSApplication {
 
     public void loginUser()
     {
-
-
         String username, password, role;
 
         System.out.println("=======================================");
@@ -125,24 +123,22 @@ public class CRSApplication {
 
     public void updatePassword()
     {
-        String oldPassword,newPassword,username,role;
+        String oldPassword,newPassword,username;
         try {
             System.out.println("=======================================");
             System.out.print("Enter UserID: ");
             username = sc.nextLine();
             System.out.print("Enter existing Password: ");
             oldPassword = sc.nextLine();
-            System.out.print("Enter Role (student/professor/admin): ");
-            role = sc.nextLine();
 
             UserImplementation uo = new UserImplementation();
-            if(uo.loginUser(username, oldPassword, role))
-            {
-                System.out.println("=======================================");
-                System.out.print("Enter new Password: ");
-                newPassword = sc.nextLine();
-                uo.updatePassword(username, newPassword, role);
-            }
+           // if(uo.loginUser(username, oldPassword, role))
+            //{
+            System.out.println("=======================================");
+            System.out.print("Enter new Password: ");
+            newPassword = sc.nextLine();
+            uo.updatePassword(username, newPassword); //function calling
+           // }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -152,7 +148,7 @@ public class CRSApplication {
     public void  selfRegisterStudent()
     {
         String studentId, password, name, department;
-        String joiningDate;
+        String joiningDate,address,contactnum;
 
         try {
             System.out.println("=======================================");
@@ -168,15 +164,19 @@ public class CRSApplication {
             department = sc.nextLine();
             System.out.print("Joining Date, Please enter in format dd-MM-YYYY: ");
             joiningDate = sc.nextLine();
+            System.out.print("Address: ");
+            address = sc.nextLine();
+            System.out.print("Contact Number: ");
+            contactnum = sc.nextLine();
             System.out.println("=======================================");
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-            Student stud = so.registerStudent(studentId, name, password, department, formatter.parse(joiningDate));
+            Student stud = so.registerStudent(studentId, name, password, department, formatter.parse(joiningDate),address,contactnum);
             if(stud == null) {
-                System.out.println("User Was not added");
+                System.out.println("Student Was not added");
                 System.out.println("=======================================");
             }
             else {
-                System.out.println("User Added Successfully! Wait for admin approval!");
+                System.out.println("Student Added Successfully! Wait for admin approval!");
                 System.out.println("=======================================");
             }
 

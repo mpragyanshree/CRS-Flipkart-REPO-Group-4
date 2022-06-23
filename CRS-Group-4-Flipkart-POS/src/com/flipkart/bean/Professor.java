@@ -3,16 +3,16 @@ package com.flipkart.bean;
 import java.util.Date;
 
 public class Professor extends User {
-    public Professor(String userId, String name, String role, String password, Date joiningDate, String professorId, String department, String designation) {
-        super(userId, name, role, password, joiningDate);
+
+    public Professor(Date joiningDate, String userId, String name, String role, String password, String address, String contactnum, String professorId, String department, String designation) {
+        super(joiningDate, userId, name, role, password, address, contactnum);
         this.professorId = professorId;
         this.department = department;
         this.designation = designation;
     }
 
-
-
-
+    public Professor() {
+    }
 
     private String professorId;
     private String department;

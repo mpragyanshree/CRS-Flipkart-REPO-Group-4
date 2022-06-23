@@ -4,13 +4,17 @@ public class Course {
     private String courseCode;
     private String courseName;
     private String instructorId;
-    private boolean isAvailable;
+    private int numberOfSeats;
 
-    public Course(String courseCode, String courseName, String instructorId, boolean isAvailable) {
+
+    private Boolean isprimary;
+
+    public Course(String courseCode, String courseName, String instructorId, int numberOfSeats) {
         this.courseCode = courseCode;
         this.courseName = courseName;
         this.instructorId = instructorId;
-        this.isAvailable = isAvailable;
+        this.numberOfSeats = numberOfSeats;
+        this.isprimary=false;
     }
 
     public Course() {}
@@ -39,12 +43,15 @@ public class Course {
         this.instructorId = instructorId;
     }
 
-    public boolean isAvailable() {
-        return isAvailable;
+    public int getNumberOfSeats() { return numberOfSeats; }
+
+    public void setNumberOfSeats(int numberOfSeats) { this.numberOfSeats = numberOfSeats; }
+
+    public Boolean getIsprimary() {
+        return isprimary;
     }
 
-    public void setAvailable(boolean available) {
-        isAvailable = available;
+    public void setIsprimary(Boolean isprimary) {
+        this.isprimary = isprimary;
     }
-
 }
