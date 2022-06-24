@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import com.flipkart.exception.*;
 
 public class UserDaoImplementation implements UserDaoInterface{
     private static volatile UserDaoImplementation instance=null;
@@ -46,11 +47,32 @@ public class UserDaoImplementation implements UserDaoInterface{
             {
                 passwordDB = rs.getString("password");
             }
-            if(password.equals(passwordDB)) flag = true;
-            if(!flag) System.out.println("Wrong Password");
+            if(password == null) {
+                throw new UserNotFoundException();
+            }
+            if(password.equals(passwordDB))
+            {
+                flag=true;
+                return true;
+            }
+            if(!flag)
+            {
+                System.out.println("Wrong Password");
+                throw new LoginFailedException(userID);
+            }
             }catch (SQLException ex) {
                     ex.printStackTrace();
             }
-        return flag;
+        catch(LoginFailedException ex){
+            System.out.println(ex.getMessage());
+        }
+        catch (UserNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return false;
     }
+
 }

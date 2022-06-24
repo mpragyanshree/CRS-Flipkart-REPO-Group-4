@@ -1,10 +1,10 @@
 package com.flipkart.bean;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Professor extends User {
 
-    public Professor(Date joiningDate, String userId, String name, String role, String password, String address, String contactnum, String professorId, String department, String designation) {
+    public Professor(String joiningDate, String userId, String name, String role, String password, String address, String contactnum, String professorId, String department, String designation) {
         super(joiningDate, userId, name, role, password, address, contactnum);
         this.professorId = professorId;
         this.department = department;

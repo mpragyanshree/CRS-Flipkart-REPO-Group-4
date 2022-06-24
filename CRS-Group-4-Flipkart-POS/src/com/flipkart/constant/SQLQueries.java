@@ -17,7 +17,7 @@ public class SQLQueries {
     public static final String REMOVE_COURSE = "delete from course where coursecode = ?";
     public static final String UPDATE_COURSE = "update course set coursecode=?,coursename=?,instructorid=?,numberofseats=? where courseid=?";
     // view pending students for approval
-    public static final String VIEW_PENDING_STUDENT_APPROVAL = "select studentId from student where isApproved = 0 and registrationstatus = 1";
+    public static final String VIEW_PENDING_STUDENT_APPROVAL = "select studentid from student where isapproved = 0 and registrationstatus = 1";//check
     // approve student registration
     public static final String APPROVE_STUDENT_QUERY = "update student set isapproved = 1 where studentId = ?";
     // generate gradecard
@@ -27,7 +27,7 @@ public class SQLQueries {
     // view student details for all the courses
     public static final String ADMIN_GET_REGISTERED_STUDENTS = "select registeredcourses.studentID, user.name FROM registeredcourses natural join user on registeredcourses.studentid = user.userid where registeredcourses.coursecode = ?";
     // view student wise grades
-    public static final String ADMIN_GET_COURSE_GRADES = "select studentID, grade from registeredcourses  where courseid = ?";
+    public static final String ADMIN_GET_COURSE_GRADES = "select studentid, grade from registeredcourses  where courseid = ?";
     public static final String ADD_USER_QUERY = "insert into User(userId, name, password, role, gender, address, country) values (?, ?, ?, ?, ?, ?, ?)";
     public static final String ADD_PROFESSOR_QUERY = "insert into Professor(userId, department, designation) values (?, ?, ?)";
     public static final String ASSIGN_COURSE_QUERY = "update Course set professorId = ? where courseCode = ?";
@@ -64,14 +64,15 @@ public class SQLQueries {
     public static final String INSERT_PAYMENT = "insert into payment(studentId,modeofPayment,referenceId,amount) values(?,?,?,?);";
     public static final String INSERT_NOTIFICATION = "insert into notification(studentId,type,referenceId) values(?,?,?);";
     public static final String GET_NOTIFICATION = "select * from notification where referenceId = ?;";
-    public static final String ADD_GRADE="update registeredcourse set Grade=? where courseCode=? and studentId=?";
+    public static final String ADD_GRADE="update registeredcourses set grade=? where coursecode=? and studentid=?";
+    public static final String GET_PROF_ID="select professorId from professor where userId = ?";
     public static final String GET_COURSES="select * from course where professorId=?";
     public static final String GET_REGISTRATION_STATUS=" select isRegistered from student where studentId = ? ";
     public static final String SET_REGISTRATION_STATUS="update student set isRegistered = true  where studentId=?";
-    public static final String GET_REGISTERED_STUDENTS="select course.courseCode,course.courseName,registeredcourse.studentId from course inner join registeredcourse on course.courseCode = registeredcourse.courseCode where course.professorId = ? order by course.courseCode";
-    public static final String AVAILABLE_COURSES_PROFESSOR="";
-    public static final String REGISTER_COURSE_PROFESSOR="";
-    public static final String IS_AVAILABLE_COURSE_PROFESSOR="";
+    public static final String GET_REGISTERED_STUDENTS="select * from registeredcourses where coursecode=?";
+    public static final String AVAILABLE_COURSES_PROFESSOR="select * from coursecatalog where professorid is NULL";
+    public static final String REGISTER_COURSE_PROFESSOR="update coursecatalog set professorid =? where coursecode =?";
+    public static final String IS_AVAILABLE_COURSE_PROFESSOR="select * coursecatalog where coursecode = ? and professorid is NULL";
     public static final String NUMBER_OF_REGISTERED_COURSES=" select studentId from registeredcourse where studentId = ? ";
     public static final String IS_REGISTERED=" select courseCode from registeredcourse where courseCode=? and studentId=? ";
     public static final String GET_GRADECARD = "select courseCode, grade FROM registeredcourses where studentID=?";

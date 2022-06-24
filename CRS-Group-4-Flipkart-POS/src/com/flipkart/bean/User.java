@@ -1,9 +1,9 @@
 package com.flipkart.bean;
-import java.util.Date;
+import java.sql.Date;
 
 public class User {
 
-    private Date joiningDate;
+    private String joiningDate;
     private String userId;
     private String name;
     private String role;
@@ -12,7 +12,7 @@ public class User {
     private String address;
     private String contactnum;
 
-    public User(Date joiningDate, String userId, String name, String role, String password, String address, String contactnum) {
+    public User(String joiningDate, String userId, String name, String role, String password, String address, String contactnum) {
         this.joiningDate = joiningDate;
         this.userId = userId;
         this.name = name;
@@ -75,11 +75,11 @@ public class User {
         this.password = password;
     }
 
-    public Date getJoiningDate() {
+    public String getJoiningDate() {
         return joiningDate;
     }
 
-    public void setJoiningDate(Date joiningDate) {
+    public void setJoiningDate(String joiningDate) {
         this.joiningDate = joiningDate;
     }
 

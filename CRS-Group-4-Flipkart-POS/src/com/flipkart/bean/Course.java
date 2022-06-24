@@ -1,14 +1,16 @@
 package com.flipkart.bean;
-
+/*
+Course Class
+ */
 public class Course {
     private String courseCode;
     private String courseName;
     private String instructorId;
     private int numberOfSeats;
-
-
     private Boolean isprimary;
-
+    /*
+    Constructor for Course Class
+     */
     public Course(String courseCode, String courseName, String instructorId, int numberOfSeats) {
         this.courseCode = courseCode;
         this.courseName = courseName;
@@ -16,9 +18,13 @@ public class Course {
         this.numberOfSeats = numberOfSeats;
         this.isprimary=false;
     }
-
+    /*
+    Default constructor
+     */
     public Course() {}
-
+    /*
+    Method to get Course ID
+     */
     public String getCourseCode() {
         return courseCode;
     }

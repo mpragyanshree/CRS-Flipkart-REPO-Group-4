@@ -36,10 +36,10 @@ public class ProfessorImplementation implements ProfessorInterface {
 
 
 @Override
-    public boolean addGrade(int studentId,String courseCode,String grade, int semester)  {
+    public boolean addGrade(String studentId,String courseCode,String grade)  {
         try
         {
-            return professorDAOInterface.addGrade(studentId, courseCode, grade,semester);
+            return professorDAOInterface.addGrade(studentId, courseCode, grade);
         }
         catch(Exception ex)
         {
@@ -62,38 +62,15 @@ public class ProfessorImplementation implements ProfessorInterface {
         return registeredStudents;
     }
 
-
-@Override
-    public List<Course> viewCourseProfessor(String professorID) {
-
-        List<Course> taughtCourses=new ArrayList<Course>();
-        try
-        {
-            taughtCourses=professorDAOInterface.getCoursesByProfessor(professorID);
-        }
-        catch(Exception ex)
-        {
-            System.out.println("error encountered");
-        }
-        return taughtCourses;
-    }
-
-
- @Override
-    public String getProfessorID(String profId)
-    {
-        return professorDAOInterface.getProfessorById(profId);
-    }
-
     @Override
-    public List<Course> viewRegisteredCourses(String semester)
+    public List<Course> viewRegisteredCourses()
     {
-        return professorDAOInterface.viewAvailableCouses(semester);
+        return professorDAOInterface.viewAvailableCourses();
     }
     @Override
-    public boolean registerCourse(String professorID, String courseId, int semester)
+    public boolean registerCourse(String professorID, String courseId)
     {
-       return professorDAOInterface.registerCourse(professorID,courseId,semester);
+       return professorDAOInterface.registerCourse(professorID,courseId);
     }
 
 

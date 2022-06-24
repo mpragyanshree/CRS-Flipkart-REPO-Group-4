@@ -1,4 +1,5 @@
 package com.flipkart.service;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ public class SemesterRegistrationImplementation implements SemesterRegistrationI
     StudentDaoImplementation SDO = new StudentDaoImplementation();
     private Context.ThrowErrorManager logger;
 
+    // function to register course
     public boolean registerCourses(String studentId, int Semester)
     {
         try {
@@ -35,9 +37,9 @@ public class SemesterRegistrationImplementation implements SemesterRegistrationI
         } catch (PaymentDoneException e) {
             logger.error(e.getMessage());
         }
-
-
+        return false;
     }
+    // function to add course
     public boolean addCourse(String studentId, int Semester, String CourseId, boolean isPrimary)
     {
         //added in dataBase
@@ -51,6 +53,7 @@ public class SemesterRegistrationImplementation implements SemesterRegistrationI
         }
         return false;
     }
+    // function to drop course
     public boolean dropCourse(String studentId, int SemesterId, String CourseId)
     {
         try {
@@ -63,6 +66,7 @@ public class SemesterRegistrationImplementation implements SemesterRegistrationI
         return false;
 
     }
+    //function to view course catalog
     public ArrayList<Course> viewCourseCatalog()
     {
         /* HashMap<String, Course> courseCatalog = new HashMap<String,Course>();
@@ -101,11 +105,11 @@ public class SemesterRegistrationImplementation implements SemesterRegistrationI
     }
     public Boolean checkPaymentWindow(String StudentID)   {
 
-       try {
+      // try {
             return SDO.checkPaymentWindow(StudentID);
-        } catch (PaymentWindowException | StudentNotRegisteredException e ) {
+        /*} catch (PaymentWindowException | StudentNotRegisteredException e ) {
             logger.error(e.getMessage());
-        }
+        }*/
 
        // return false;
     }

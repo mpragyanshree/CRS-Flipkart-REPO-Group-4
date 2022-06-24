@@ -6,6 +6,9 @@ import java.util.*;
 //import com.flipkart.validator.ProfessorValidator;
 
 
+import com.flipkart.exception.CourseNotFoundException;
+import com.flipkart.exception.GradeNotAddedException;
+import com.flipkart.exception.ProfessorCourseRegistrationException;
 import com.flipkart.service.ProfessorImplementation;
 //import org.apache.logging.log4j.LogManager;
 //import org.apache.logging.log4j.Logger;
@@ -44,7 +47,7 @@ public class CRSProfessor {
     public void createProfessorMenu(String username) {
         try {
 
-            this.professorID = getProfessorID(username);
+            professorID = username;
 
             while(true) {
 
@@ -52,7 +55,6 @@ public class CRSProfessor {
                 System.out.println("Choose an option : ");
                 System.out.println("1 : View registered students");
                 System.out.println("2 : Add Grade");
-
                 System.out.println("3 : Show Registered courses");
                 System.out.println("4 : Register for a course");
                 System.out.println("5 : Logout");
@@ -94,99 +96,94 @@ public class CRSProfessor {
         }
     }
 
-    private void viewRegisteredStudents(){
+    private void viewRegisteredStudents() throws CourseNotFoundException {
 
         String courseID;
-        int semesterID;
 
         System.out.println("Enter course ID: ");
         courseID= sc.nextLine();
-        System.out.println("Enter semester ID: ");
-        semesterID = sc.nextInt();
 
         try {
-            if(true){
-                profObj.viewRegisteredStudents();
+            if(true){ // validation pending
+                profObj.viewRegisteredStudents(professorID,courseID);
             }
             else{
 //                logger.error("Invalid Semester");
-                System.out.println("invalid sem");
+                System.out.println("invalid course ID");
             }
 
         }
         catch(Exception e) {
-            System.out.println("course not found");
+            throw new CourseNotFoundException(courseID);
         }
 
     }
 
-    private void registerCourses() {
-        Integer semesterID;
-        String courseID;
-        System.out.println("Enter course ID: ");
-        courseID = sc.nextLine();
-        System.out.println("Enter Semester ID: ");
-        semesterID = sc.nextInt();
-        sc.nextLine();
-        profObj.registerCourse(professorID,courseID, semesterID);
-    }
+    private void addGrade() throws CourseNotFoundException, GradeNotAddedException {
 
+
+            String courseID,grade;
+            String studentID;
+            System.out.println("Enter student ID: ");
+            studentID = sc.nextLine();
+            sc.nextLine();
+            System.out.println("Enter course ID: ");
+            sc.nextLine();
+            courseID = sc.nextLine();
+            System.out.println("Enter Grade: ");
+            grade = sc.nextLine();
+            sc.nextLine();
+
+            try{
+            if(true) { // validation pending
+                profObj.addGrade(studentID,courseID,grade);
+            }
+            else{
+//            logger.error("Invalid Grade!!");
+                System.out.println("invalid grade");
+            }
+            }catch(Exception e) {
+                throw new GradeNotAddedException(studentID);
+            }
+
+    }
     private void viewRegisteredCourses() {
 
-        Integer semesterID;
-        System.out.println("Enter Semester ID: ");
-        semesterID = sc.nextInt();
 
-        profObj.viewRegisteredCourses(semesterID);
+//        System.out.println("Enter Semester ID: ");
+//        semesterID = sc.nextInt();
+
+        profObj.viewRegisteredCourses();
 
 
     }
 
-    private void addGrade(){
-
-        String courseID,grade;
-        Integer studentID,semesterID;
-        System.out.println("Enter student ID: ");
-        studentID = sc.nextInt();
-        sc.nextLine();
-        System.out.println("Enter Semester ID: ");
-        semesterID = sc.nextInt();
+    private void registerCourses() throws ProfessorCourseRegistrationException {
+        String courseID,professorID;
         System.out.println("Enter course ID: ");
-        sc.nextLine();
+        professorID = sc.nextLine();
+        System.out.println("Enter course ID: ");
         courseID = sc.nextLine();
-        System.out.println("Enter Grade: ");
-        grade = sc.nextLine();
-        sc.nextLine();
-        if(true) {
-            profObj.addGrade(studentID,courseID,grade,semesterID);
-        }
-        else{
-//            logger.error("Invalid Grade!!");
-            System.out.println("invalid grade");
-        }
 
+        try {
+            profObj.registerCourse(professorID, courseID);
+        }catch (Exception e)
+        {
+            throw new ProfessorCourseRegistrationException();
+        }
     }
-
-
 
     // Get ID of professor by providing username.
-    private String getProfessorID(String username){
+    /*private String getProfessorID(String username){
 
-        ProfessorInterface pf = new ProfessorImplementation();
+
+        ProfessorInterface po = ProfessorImplementation.getInstance();
         try {
-            for (Professor s : pf) {
-                if(s.getName() == username)
-                {
-                    return s.getUserId();
-                }
-
-            }
-            return null;
-
+            return po.getProfessorID(username);
         } catch (Exception e) {
 
-            System.out.println("faltu error");
+            System.out.println("error");
         }
         return "";
-    }
+    }*/
 }

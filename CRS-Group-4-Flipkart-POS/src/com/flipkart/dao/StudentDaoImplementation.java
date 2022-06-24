@@ -8,6 +8,7 @@ import com.flipkart.exception.*;
 import com.flipkart.utils.DBUtil;
 import jdk.nashorn.internal.runtime.Context;
 
+import java.sql.Date;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,8 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.*;
-import java.sql.Date;
+//import java.util.*;
 //import java.util.Date;
 import java.util.Scanner;
 
@@ -46,7 +46,7 @@ public class StudentDaoImplementation implements StudentDaoInterface {
         return instance;
     }
 
-    public Student addStudent(Student student){
+    public Student addStudent(Student student) throws UsernameTakenException {
 
         Connection connection = DBUtil.getConnection();
 
@@ -60,13 +60,14 @@ public class StudentDaoImplementation implements StudentDaoInterface {
             }
             int nextstudentid=Integer.parseInt(studentId)+1;
             studentId=Integer.toString(nextstudentid);
+            student.setUserId(studentId);
             student.setStudentId(studentId);
 
             PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.ADD_USER);
             preparedStatement.setString(1, student.getUserId());
             preparedStatement.setString(2, student.getName());
             preparedStatement.setString(3, student.getPassword());
-            preparedStatement.setDate(4, (Date) student.getJoiningDate());
+            preparedStatement.setString(4, student.getJoiningDate());
             preparedStatement.setString(5, "student");
             preparedStatement.setString(6, student.getAddress());
             preparedStatement.setString(7, student.getContactnum());
@@ -74,7 +75,7 @@ public class StudentDaoImplementation implements StudentDaoInterface {
 
 
             PreparedStatement preparedStatement1 = connection.prepareStatement(SQLQueries.ADD_STUDENT);
-            preparedStatement1.setString(1, student.getStudentId());
+            preparedStatement1.setString(1, student.getUserId());
             preparedStatement1.setString(2, student.getDepartment());
             preparedStatement1.setBoolean(3, false);
             preparedStatement1.executeUpdate();
@@ -82,16 +83,16 @@ public class StudentDaoImplementation implements StudentDaoInterface {
         }
         catch(SQLException ex) {
             System.out.println("Username taken exception");
-            //throw new UsernameTakenException();
+            throw new UsernameTakenException();
 
         }
         return student;
     }
 
-    public Grade viewReportCard(String StudentID){
+    public List<Grade> viewReportCard(String StudentID) throws ReportCardNotGeneratedException, GradeNotAddedException , StudentNotApprovedException, FeesPendingException{
 
         Connection connection = DBUtil.getConnection();
-        Grade R = new Grade();
+        List<Grade> R = new ArrayList<Grade>();
 
 
         try
@@ -99,6 +100,7 @@ public class StudentDaoImplementation implements StudentDaoInterface {
             PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.CHECK_GRADECARD);
             preparedStatement.setString(1, "1");
             ResultSet rc = preparedStatement.executeQuery();
+
             if(rc.getBoolean(1)) {
 
 
@@ -106,9 +108,18 @@ public class StudentDaoImplementation implements StudentDaoInterface {
                 prepareStatement.setString(1, StudentID);
 
                 ResultSet rs = prepareStatement.executeQuery();
+
+                while(rs.next()){
+                    Grade g = new Grade();
+                    g.setCourseId(rs.getString("courseID"));
+                    g.setGrade(rs.getString("Grade"));
+                    R.add(g);
+                }
+
             }
             else{
                 System.out.println("Report Card not yet generated! Please contact admin for further details.");
+                throw new ReportCardNotGeneratedException();
             }
 
             //System.out.println(rs);
@@ -116,11 +127,15 @@ public class StudentDaoImplementation implements StudentDaoInterface {
         } catch(SQLException e) {
             logger.error(e.getMessage());
         }
+        if(R.isEmpty()) {
+            System.out.println("Grade Card not Generated yet!!");
+            throw new ReportCardNotGeneratedException();
+        }
 
         return R;
     }
 
-    public List<Course> viewRegisteredCourses(String studentID) {
+    public List<Course> viewRegisteredCourses(String studentID) throws StudentNotRegisteredException {
 
         Connection connection=DBUtil.getConnection();
         List<Course> registeredCourses = new ArrayList<Course>();
@@ -159,12 +174,13 @@ public class StudentDaoImplementation implements StudentDaoInterface {
 
         if(registeredCourses.isEmpty()) {
             System.out.println("Student not registered");
+            throw new StudentNotRegisteredException();
         }
 
         return registeredCourses;
     }
 
-    public Boolean checkPaymentWindow(String StudentID)  throws PaymentWindowException , StudentNotRegisteredException {
+    public Boolean checkPaymentWindow(String StudentID)  /*throws PaymentWindowException , StudentNotRegisteredException*/ {
 
        /*boolean isPaymentOpen = false;
         Connection conn = DBUtil.getConnection();

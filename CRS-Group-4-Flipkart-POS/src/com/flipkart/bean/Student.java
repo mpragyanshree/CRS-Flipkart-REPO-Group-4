@@ -1,6 +1,6 @@
 package com.flipkart.bean;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Student extends User{
 
@@ -8,7 +8,7 @@ public class Student extends User{
     private String studentId;
     private boolean isApproved;
 
-    public Student(Date joiningDate, String userId, String name, String role, String password, String address, String contactnum, String department, String studentId, boolean isApproved) {
+    public Student(String joiningDate, String userId, String name, String role, String password, String address, String contactnum, String department, String studentId, boolean isApproved) {
         super(joiningDate, userId, name, role, password, address, contactnum);
         this.department = department;
         this.studentId = studentId;

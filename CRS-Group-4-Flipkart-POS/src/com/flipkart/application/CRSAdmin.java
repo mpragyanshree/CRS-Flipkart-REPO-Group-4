@@ -1,5 +1,6 @@
 package com.flipkart.application;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -10,7 +11,7 @@ import com.flipkart.service.AdminInterface;
 
 public class CRSAdmin {
     private Scanner sc = new Scanner(System.in);
-    AdminInterface ao = (AdminInterface) AdminImplementation.getInstance();
+    AdminImplementation ao = AdminImplementation.getInstance();
 
     public void createAdminMenu (String adminId){
         System.out.println("*************Admin Menu**************");
@@ -270,8 +271,8 @@ public class CRSAdmin {
             joiningDate = sc.nextLine();
             sc.nextLine();
 
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-            Professor prof = ao.addProfessor(username, name, password, department, formatter.parse(joiningDate),address,contact);
+            //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            Professor prof = ao.addProfessor(username, name, password, department, joiningDate,address,contact);
             if(prof == null) {
                 System.out.println("User Was not added");
                 System.out.println("=======================================");
@@ -332,8 +333,8 @@ public class CRSAdmin {
             System.out.println("Joining date. Please enter in format dd-mm-yyyy");
             joiningDate = sc.nextLine();
             sc.nextLine();
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-            ao.updateProfessor(username, name, password, department, designation, address, contact, formatter.parse(joiningDate));
+            //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            ao.updateProfessor(username, name, password, department, designation, address, contact, joiningDate);
             System.out.println("Professor updated successfully!!! Returning you to main menu");
             TimeUnit.SECONDS.sleep(3);
             System.out.println("=======================================");
@@ -412,7 +413,7 @@ public class CRSAdmin {
             joiningdate = sc.nextLine();
             sc.nextLine();
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-            Admin ad = ao.addAdmin(username, name, password, contact, formatter.parse(joiningdate),address);
+            Admin ad = ao.addAdmin(username, name, password, contact, joiningdate,address);
             if(ad == null) {
                 System.out.println("User Was not added");
                 System.out.println("=======================================");
@@ -486,8 +487,8 @@ public class CRSAdmin {
                 // fetch existing joining date
             }*/
             // add admin details - interface link
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-            ao.updateAdmin(name, password, contact, formatter.parse(joiningDate),address);
+            //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            ao.updateAdmin(adminId, name, password, contact, joiningDate,address);
             System.out.println("=======================================");
             System.out.println("Admin updated successfully!!! Returning you to main menu");
             TimeUnit.SECONDS.sleep(3);
@@ -503,8 +504,8 @@ public class CRSAdmin {
         System.out.println("=======================================");
         int a = 0 ;
         System.out.println("Enter Semester No. to enable Payment Window : ");
-        int sem = sc.nextInt();
-        sc.nextLine();
+        String sem = sc.nextLine();
+
         System.out.println("Enter 0 to disable payment window: ");
         System.out.println("Enter -1 to exit: ");
         a = sc.nextInt();
@@ -515,11 +516,13 @@ public class CRSAdmin {
         }
 
         else if (a > 0 && a < 9){
+            ao.enableFeePaymentWindow(sem);
             System.out.println("Payment window is now open!!! Returning you to main menu");
 
-//            ao.enableFeePayment(sem);
+
         }
         else if (a == 0){
+            ao.disableFeePaymentWindow(sem);
             System.out.println("Payment window is now closed!!! Returning you to main menu");
 //            ao.disableFeePayment(sem);
         }
@@ -610,8 +613,10 @@ public class CRSAdmin {
 
     }
 
-    private void generateGradeCard() {
-        ao.generateGradeCard();
+    public void generateGradeCard() {
+        System.out.println("Please enter StudentId for which gradecard needs to be generated");
+        String studentId = sc.nextLine();
+        ao.generateGradeCard(studentId);
         System.out.println("Grade Cards generated successfully, now available for students to view!");
     }
 }

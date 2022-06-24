@@ -3,20 +3,19 @@ import java.util.*;
 import com.flipkart.bean.Course;
 import com.flipkart.bean.RegisteredStudents;
 import com.flipkart.bean.Student;
+import com.flipkart.exception.GradeNotAddedException;
 
 public interface ProfessorDaoInterface {
 
-    public List<Course> getCoursesByProfessor(String userID);
 
     public List<RegisteredStudents> getRegisteredStudents(String professorID, String courseID);
 
-    public Boolean addGrade(int studentId,String courseID,String grade,int semester);
+    public Boolean addGrade(String studentId,String courseID,String grade) throws GradeNotAddedException;
 
-    public String getProfessorById(String professorID);
 
-    public List<Course> viewAvailableCouses(String semester);
+    public List<Course> viewAvailableCourses();
 
-    public boolean registerCourse(String professorID, String courseID, int semester);
+    public boolean registerCourse(String professorID, String courseID);
 }
 
 

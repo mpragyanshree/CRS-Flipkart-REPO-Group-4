@@ -4,6 +4,7 @@ import com.flipkart.dao.AdminDaoImplementation;
 import com.flipkart.dao.AdminDaoInterface;
 import com.flipkart.dao.UserDaoImplementation;
 import com.flipkart.dao.UserDaoInterface;
+import com.flipkart.exception.*;
 
 public class UserImplementation implements UserInterface {
     UserDaoInterface udo  = UserDaoImplementation.getInstance();
@@ -11,7 +12,7 @@ public class UserImplementation implements UserInterface {
         udo.updatePassword(userID,newPassword);
     }
 
-    public boolean loginUser(String userID,String password, String role){
+    public boolean loginUser(String userID,String password, String role) throws UserNotFoundException {
         return udo.loginUser(userID,password); //check credentials
     }
     public void updateUserDetails(String UserId, String UserName){

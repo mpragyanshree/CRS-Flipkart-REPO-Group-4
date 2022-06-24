@@ -6,6 +6,7 @@ import com.flipkart.bean.Grade;
 import com.flipkart.service.SemesterRegistrationImplementation;
 import com.flipkart.service.PaymentImplementation;
 import com.flipkart.service.StudentImplementation;
+import com.flipkart.exception.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,8 +18,11 @@ public class CRSStudent {
     private String studentID;
     private boolean finishedRegistration = false;
 
+
     SemesterRegistrationImplementation sro = new SemesterRegistrationImplementation();
     StudentImplementation so = new StudentImplementation();
+
+
 
     // Home page for a Student Login.
     public void createStudentMenu(String username) {
@@ -59,7 +63,7 @@ public class CRSStudent {
                         break;
 
                     case 4:
-                        // Log out from the system.
+                        // Logging out from the system.
                         System.out.println("Logging Out ...");
                         CRSApplication crsapp = new CRSApplication();
                         crsapp.createMenu();
@@ -75,7 +79,7 @@ public class CRSStudent {
         }
     }
 
-
+    //Function that Create Registration Dashboard
     private void createRegistrationDashboard() {
         Scanner sc = new Scanner(System.in);
 
@@ -164,7 +168,7 @@ public class CRSStudent {
             try {
 
                 if(!finishedRegistration) {
-                    throw new Exception("You registration is incomplete!");
+                    throw new Exception("Your registration is incomplete!");
                 }
 
                 System.out.println("=======================================");
@@ -217,7 +221,7 @@ public class CRSStudent {
         }
 
     }
-
+// function to drop course
     private void dropCourse() {
 
         System.out.println("=======================================");
@@ -241,7 +245,7 @@ public class CRSStudent {
             System.out.println("Course was not dropped from the cart.");
         }
     }
-
+//function to add course
     private void addCourse() {
 
         System.out.println("=======================================");
@@ -268,7 +272,7 @@ public class CRSStudent {
             System.out.println("Course was not added to the cart.");
         }
     }
-
+// function to view Available Course
     private void viewAvailableCourses() {
         /* HashMap<String, Course> courseCatalog = null;
         courseCatalog = sro.viewCourseCatalog();
@@ -285,14 +289,14 @@ public class CRSStudent {
             System.out.println("Course ID : "+c.getCourseCode() +"\t Available seats : "+c.getNumberOfSeats()+" \t Instructor : "+c.getInstructorId()+" \t Course Name : "+ c.getCourseName());
         }
     }
-
-    private void viewRegisteredCourses(String studentID, int semesterID)  {
+//function View Registered Course
+    private void viewRegisteredCourses(String studentID, int semesterID) throws StudentNotRegisteredException, SQLException {
 
         sro.viewRegisteredCourses(studentID, semesterID);
         createStudentMenu(studentID);
     }
-
-    private void viewGradeCard(String studentID, int semesterID) {
+// Function to view grade card
+    private void viewGradeCard(String studentID, int semesterID) throws SQLException, GradeNotAddedException, StudentNotApprovedException, FeesPendingException, StudentNotApprovedException {
         Grade R;
         so.viewGradeCard(studentID, semesterID);
     }

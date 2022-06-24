@@ -20,12 +20,12 @@ public class SemesterRegistrationDaoImplementation implements SemesterRegistrati
     private static Connection conn = DBUtil.getConnection();
     private Context.ThrowErrorManager logger;
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         SemesterRegistrationDaoInterface test = new SemesterRegistrationDaoImplementation();
         test.registerCourses("5",1);
-    }
+    }*/
 
-    public boolean registerCourses(String studentId, int semesterId) {
+    public boolean registerCourses(String studentId, int semesterId) throws InvalidSemesterRegistration,PaymentDoneException {
 
         PreparedStatement stmt,stmt2;
 
@@ -241,11 +241,11 @@ public class SemesterRegistrationDaoImplementation implements SemesterRegistrati
                 throw new CourseNotFoundException();            }
 
             if(courseObj.getNumberOfSeats() <= 0) {
-                throw new CourseNotInCart(courseId);
+                throw new CourseSeatsUnavailableException(courseId);
             }
 
             if(checkRegisteredCourseExists(studentId, semesterId, courseId)) {
-                System.out.println("Course seats Exception");
+                throw new CourseExistsInCartException(courseId);
             }
 
             String query = SQLQueries.REGISTRATION_ADD_COURSE;

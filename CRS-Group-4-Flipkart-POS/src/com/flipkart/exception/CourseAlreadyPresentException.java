@@ -18,7 +18,7 @@ public class CourseAlreadyPresentException extends Exception{
         // TODO Auto-generated constructor stub
         courseID = "";
     }
-    /**
+    /*
      * @param courseID
      */
     public CourseAlreadyPresentException(String courseID) {

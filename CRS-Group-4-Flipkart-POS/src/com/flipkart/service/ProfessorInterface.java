@@ -7,11 +7,9 @@ import java.util.List;
 
 public interface ProfessorInterface {
 
-    public boolean addGrade(int studentId,String courseID,String grade,int semester);
+    public boolean addGrade(String studentId,String courseID,String grade);
     public List<RegisteredStudents> viewRegisteredStudents(String professorID , String course);
-    public List<Course>  viewCourseProfessor(String professorID);
-    public String getProfessorID(String username);
-    public List<Course> viewRegisteredCourses(int semester);
-    public boolean registerCourse(String professorID, String courseID, int semester);
+    public List<Course> viewRegisteredCourses();
+    public boolean registerCourse(String professorID, String courseID);
 
 }

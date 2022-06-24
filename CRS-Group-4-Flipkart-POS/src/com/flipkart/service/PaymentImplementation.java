@@ -6,9 +6,10 @@ import com.flipkart.dao.PaymentDaoImplementation;
 import com.flipkart.exception.PaymentDoneException;
 import com.flipkart.exception.PaymentFailedException;
 
+
 public class PaymentImplementation implements PaymentInterface{
     public void makePayment(FeePayment payment) {
-       // try {
+        try {
             PaymentDaoInterface paymentObj = new PaymentDaoImplementation();
             paymentObj.makePayment(payment);
 
@@ -17,10 +18,12 @@ public class PaymentImplementation implements PaymentInterface{
 			obj.showPaymentNotification(Integer.toString(payment.getStudentID()));
 			 */
 
-        /*} catch (PaymentFailedException e) {
-            logger.error(e.getMessage());
+        } catch (PaymentFailedException e) {
+            System.out.println("Payment Failed Exception");
+           // logger.error(e.getMessage());
         } catch (PaymentDoneException e) {
-            logger.error(e.getMessage());
-        }*/
+            System.out.println("Payment Done Exception");
+           // logger.error(e.getMessage());
+        }
     }
 }

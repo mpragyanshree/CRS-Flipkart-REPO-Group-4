@@ -6,11 +6,11 @@ package com.flipkart.exception;
  */
 
 public class GradeNotAddedException extends Exception {
-    private Integer studentId;
-    public GradeNotAddedException (Integer studentId) {
+    private String studentId;
+    public GradeNotAddedException (String studentId) {
         this.studentId=studentId;
     }
-    public int  getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 

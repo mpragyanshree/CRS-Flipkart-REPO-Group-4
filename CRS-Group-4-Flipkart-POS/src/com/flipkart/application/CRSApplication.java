@@ -4,16 +4,19 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.Date;
+import java.sql.Date;
 
 import com.flipkart.bean.Student;
 import com.flipkart.service.StudentInterface;
 import com.flipkart.service.StudentImplementation;
 import com.flipkart.service.UserInterface;
 import com.flipkart.service.UserImplementation;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
 
 public class CRSApplication {
     private Scanner sc = new Scanner(System.in);
+    //private static final Logger logger =  LogManager.getLogger(CRSApplication.class);
     StudentImplementation so=new StudentImplementation();
 
     public static void main(String[] args) {
@@ -70,25 +73,26 @@ public class CRSApplication {
     {
         String username, password, role;
 
-        System.out.println("=======================================");
-        System.out.print("UserID: ");
-        username = sc.nextLine();
-        System.out.print("Password: ");
-        password = sc.nextLine();
-        System.out.print("Enter Role (student/professor/admin): ");
-        role = sc.nextLine();
+        try {
 
-        UserImplementation uo = new UserImplementation();
+            System.out.println("=======================================");
+            System.out.print("UserID: ");
+            username = sc.nextLine();
+            System.out.print("Password: ");
+            password = sc.nextLine();
+            System.out.print("Enter Role (student/professor/admin): ");
+            role = sc.nextLine();
 
-        if(uo.loginUser(username, password, role))
-        {
+            UserImplementation uo = new UserImplementation();
+
+            if (uo.loginUser(username, password, role)) {
 //           DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 //            LocalDateTime now = LocalDateTime.now();
                 switch (role) {
                     case "student":
                         System.out.println("=======================================");
                         System.out.println("Logged In Successfully as a Student");
-                        System.out.println("Welcome "+username+ " !!");
+                        System.out.println("Welcome " + username + " !!");
 //                        System.out.println("Login Time: "+ dtf.format(now) );
                         CRSStudent sc = new CRSStudent();
                         sc.createStudentMenu(username);
@@ -97,7 +101,7 @@ public class CRSApplication {
                     case "professor":
                         System.out.println("=======================================");
                         System.out.println("Logged In Successfully as a Professor");
-                        System.out.println("Welcome "+username+ " !!");
+                        System.out.println("Welcome " + username + " !!");
 //                        System.out.println("Login Time: "+ dtf.format(now) );
                         CRSProfessor pc = new CRSProfessor();
                         pc.createProfessorMenu(username);
@@ -106,7 +110,7 @@ public class CRSApplication {
                     case "admin":
                         System.out.println("=======================================");
                         System.out.println("Logged In Successfully as a Admin");
-                        System.out.println("Welcome "+username+ " !!");
+                        System.out.println("Welcome " + username + " !!");
 //                        System.out.println("Login Time: "+ dtf.format(now) );
                         CRSAdmin ac = new CRSAdmin();
                         ac.createAdminMenu(username);
@@ -116,9 +120,12 @@ public class CRSApplication {
                         System.out.println("Invalid Role");
                         System.out.println("=======================================");
                 }
+            }
         }
-
-        System.out.println("User Logged in !! \n");
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+       // System.out.println("User Logged in !! \n");
     }
 
     public void updatePassword()
@@ -154,8 +161,8 @@ public class CRSApplication {
             System.out.println("=======================================");
             System.out.println("Enter your details");
             System.out.println("---------------------------------------");
-            System.out.print("StudentId: ");
-            studentId = sc.nextLine();
+            //System.out.print("StudentId: ");
+            //studentId = sc.nextLine();
             System.out.print("Password: ");
             password = sc.nextLine();
             System.out.print("Name: ");
@@ -169,8 +176,8 @@ public class CRSApplication {
             System.out.print("Contact Number: ");
             contactnum = sc.nextLine();
             System.out.println("=======================================");
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-            Student stud = so.registerStudent(studentId, name, password, department, formatter.parse(joiningDate),address,contactnum);
+            //impleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            Student stud = so.registerStudent(name, password, department, joiningDate,address,contactnum);
             if(stud == null) {
                 System.out.println("Student Was not added");
                 System.out.println("=======================================");
@@ -183,8 +190,6 @@ public class CRSApplication {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        System.out.println("Registered student");
     }
 
 }

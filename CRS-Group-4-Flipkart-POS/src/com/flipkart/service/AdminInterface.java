@@ -19,12 +19,12 @@ public interface AdminInterface {
     public void viewProfessorDetails();
     public ArrayList<ArrayList<String>> viewCourseGrades(String courseID);
     public void enabledisableFeePaymentWindow();
-    public Admin addAdmin(String username, String name, String password, String contact, Date joiningdate, String address);
-    public Professor addProfessor(String username, String name, String password, String department, Date joiningDate,String address,String contact);
+    public Admin addAdmin(String username, String name, String password, String contact, String joiningdate, String address);
+    public Professor addProfessor(String username, String name, String password, String department, String joiningDate,String address,String contact);
     public void removeProfessor(String professorID);
-    public void updateProfessor(String username, String name, String password, String department, String designation, String address, String contact, Date joiningDate);
+    public void updateProfessor(String username, String name, String password, String department, String designation, String address, String contact, String joiningDate);
     public void removeAdmin(String adminId);
-    public void updateAdmin(String name, String password, String contact, Date joiningDate,String address);
+    public void updateAdmin(String name, String password, String contact, String joiningDate,String address);
     public ArrayList<Course> viewAvailableCourses();
     public ArrayList<ArrayList<String>>  viewCourseStudentList(String courseID);
 }
