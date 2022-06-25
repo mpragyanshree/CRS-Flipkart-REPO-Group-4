@@ -1,6 +1,6 @@
 package com.flipkart.exception;
 
-// Exception arises when student tries to register for an already registered course
+// Exception arises when user tries to register for an already registered course
 public class CourseExistsInCartException extends Throwable {
 
     private final String courseId;

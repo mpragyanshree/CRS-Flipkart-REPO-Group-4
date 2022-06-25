@@ -25,9 +25,9 @@ public class SemesterRegistrationDaoImplementation implements SemesterRegistrati
         test.registerCourses("5",1);
     }*/
 
-    public boolean registerCourses(String studentId, int semesterId) throws InvalidSemesterRegistration,PaymentDoneException {
+    public boolean registerCourses(String studentId) throws InvalidSemesterRegistration,PaymentDoneException {
 
-        PreparedStatement stmt,stmt2;
+        PreparedStatement stmt,stmt2,stmt1;
 
         try {
 
@@ -57,6 +57,11 @@ public class SemesterRegistrationDaoImplementation implements SemesterRegistrati
             }
 
             if(totalPrimaryCourse == 4 && totalAlternateCourses == 2) {
+                String query1 = SQLQueries.UPDATE_REG_STATUS;
+                stmt1 = conn.prepareStatement(query1);
+                stmt1.setBoolean(1, true);
+                stmt1.setString(2, studentId);
+                ResultSet rs1 = stmt.executeQuery();
 
 				System.out.println("+-----------------------------------+");
 				System.out.println("|         Notification Alert!       |");
@@ -89,8 +94,6 @@ public class SemesterRegistrationDaoImplementation implements SemesterRegistrati
         ArrayList<Course> courseCatalog = null;
 
         try {
-
-
             String query = SQLQueries.REGISTRATION_GET_ALL_COURSES;
             stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
@@ -123,24 +126,23 @@ public class SemesterRegistrationDaoImplementation implements SemesterRegistrati
 
         try {
 
-            courseObj = getCourseDetails(courseId, semesterId);
+            courseObj = getCourseDetails(courseId);
 
             if(courseObj == null) {
                 throw new CourseNotFoundException();
             }
 
-            if(!checkRegisteredCourseExists(studentId, semesterId, courseId)) {
+            if(!checkRegisteredCourseExists(studentId, courseId)) {
                 throw new CourseNotInCart(courseId);
             }
 
             String query = SQLQueries.REGISTRATION_DROP_COURSE;
-
             stmt = conn.prepareStatement(query);
             stmt.setString(1, studentId);
             stmt.setString(2, courseObj.getCourseCode());
             stmt.execute();
 
-            changeCourseSeats(courseId, semesterId, 1);
+            if(courseObj.getIsprimary()) changeCourseSeats(courseId,1); //check
 
             return true;
 
@@ -152,40 +154,34 @@ public class SemesterRegistrationDaoImplementation implements SemesterRegistrati
 
         return false;
     }
-    private Course getCourseDetails(String courseId, Integer semesterId) {
+    public Course getCourseDetails(String courseId) {
         PreparedStatement stmt;
         Course courseObj = null;
 
         try {
 
             String query = SQLQueries.REGISTRATION_GET_COURSES;
-
             stmt = conn.prepareStatement(query);
             stmt.setString(1, courseId);
             ResultSet rs = stmt.executeQuery();
 
-            String courseID = null, courseName, instructor;
-            int offeredSemester, availableSeats;
-
+            String courseID, courseName, instructor;
+            int availableSeats;
             while (rs.next()) {
-                courseID = rs.getString("courseID");
-                courseName = rs.getString("course_name");
-                instructor = rs.getString("instructor");
-                offeredSemester = rs.getInt("offered_semester");
-                availableSeats = rs.getInt("available_seats");
-
+                courseID = rs.getString("coursecode");
+                courseName = rs.getString("coursename");
+                instructor = rs.getString("instructorid");
+                availableSeats = rs.getInt("numberofseats");
                 courseObj = new Course(courseID, courseName, instructor, availableSeats);
             }
-
             return courseObj;
 
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
-
         return null;
     }
-    private boolean checkRegisteredCourseExists(String studentId, int semesterId, String courseId) {
+    public boolean checkRegisteredCourseExists(String studentId, String courseId) {
         PreparedStatement stmt;
 
         try {
@@ -196,7 +192,6 @@ public class SemesterRegistrationDaoImplementation implements SemesterRegistrati
             stmt.setString(1, studentId);
             stmt.setString(2, courseId);
             ResultSet rs = stmt.executeQuery();
-
             rs.next();
 
             if(rs.getInt("COUNT(1)") == 1) {
@@ -209,12 +204,11 @@ public class SemesterRegistrationDaoImplementation implements SemesterRegistrati
 
         return false;
     }
-    private void changeCourseSeats(String courseId, int semesterId, int change) {
+   public void changeCourseSeats(String courseId, int change) {
         PreparedStatement stmt;
 
         try {
-
-            int currentAvailableSeats = Objects.requireNonNull(getCourseDetails(courseId, semesterId)).getNumberOfSeats();
+            int currentAvailableSeats = Objects.requireNonNull(getCourseDetails(courseId)).getNumberOfSeats();
             String query = SQLQueries.REGISTRATION_UPDATE_SEATS;
             int seatChange =  (change == 0 ? -1 : 1);
             stmt = conn.prepareStatement(query);
@@ -227,24 +221,21 @@ public class SemesterRegistrationDaoImplementation implements SemesterRegistrati
         }
     }
 
-    public boolean addCourse(String studentId, int semesterId, String courseId, boolean isPrimary) throws CourseNotFoundException, CourseSeatsUnavailableException, CourseExistsInCartException {
+    public boolean addCourse(String studentId,  String courseId, boolean isPrimary) throws CourseNotFoundException, CourseSeatsUnavailableException, CourseExistsInCartException {
 
 
         PreparedStatement stmt;
         Course courseObj;
-
         try {
 
-            courseObj = getCourseDetails(courseId, semesterId);
-
+            courseObj = getCourseDetails(courseId);
             if(courseObj == null) {
                 throw new CourseNotFoundException();            }
 
             if(courseObj.getNumberOfSeats() <= 0) {
                 throw new CourseSeatsUnavailableException(courseId);
             }
-
-            if(checkRegisteredCourseExists(studentId, semesterId, courseId)) {
+            if(checkRegisteredCourseExists(studentId, courseId)) {
                 throw new CourseExistsInCartException(courseId);
             }
 
@@ -257,8 +248,7 @@ public class SemesterRegistrationDaoImplementation implements SemesterRegistrati
             stmt.setString(4, courseObj.getInstructorId());
             stmt.setString(5, null);
             stmt.execute();
-
-            changeCourseSeats(courseId, semesterId, 0);
+            if(isPrimary) changeCourseSeats(courseId, 0);
 
             return true;
 

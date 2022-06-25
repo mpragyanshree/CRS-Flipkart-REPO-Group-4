@@ -21,6 +21,20 @@ public class NotificationImplementation implements NotificationInterface {
 		*/
 	}
 
+	/**
+	 * Method to send payment complete notification
+	 * @param StudentId
+	 * @param Amount
+	 * @param PaymentStatus
+	 * @param PaymentTime
+	 * @param paymentmode
+	 * @param newID
+	 * @param newnotificationID
+	 * @param getNotificationMSG
+	 * @param getNotificationMSG
+	 * @return  void
+	 */
+
 	public void sendPaymentCompleteNotification(String StudentId, int Amount, Time PaymentTime, Boolean PaymentStatus, String paymentmode, String newID,
 												String newnotificationID, String getNotificationMSG) {
 

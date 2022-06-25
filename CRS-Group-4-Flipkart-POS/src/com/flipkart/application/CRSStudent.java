@@ -23,8 +23,10 @@ public class CRSStudent {
     StudentImplementation so = new StudentImplementation();
 
 
+    /**
+     * Home page for a Student Login.
+     */
 
-    // Home page for a Student Login.
     public void createStudentMenu(String username) {
 
         try {
@@ -54,7 +56,7 @@ public class CRSStudent {
 
                     case 2 :
                         // View all the courses registered by the student.
-                        viewRegisteredCourses(studentID,1);
+                        viewRegisteredCourses(studentID);
                         break;
 
                     case 3:
@@ -96,9 +98,8 @@ public class CRSStudent {
                 System.out.println("5 : Make a payment and exit");
                 System.out.println("6 : Exit");
                 System.out.println("=======================================");
-
                 int menuOption = sc.nextInt();
-
+                sc.nextLine();
                 switch(menuOption) {
                     case 1 :
                         // View all the courses available to register in the semester.
@@ -144,7 +145,7 @@ public class CRSStudent {
         System.out.println("=======================================");
         System.out.println("Finishing registration...");
 
-        finishedRegistration = sro.registerCourses(studentID, 1);
+        finishedRegistration = sro.registerCourses(studentID);
 
         if(finishedRegistration) {
             System.out.println("Registration completed successfully!");
@@ -221,7 +222,7 @@ public class CRSStudent {
         }
 
     }
-// function to drop course
+// Function to drop course
     private void dropCourse() {
 
         System.out.println("=======================================");
@@ -245,7 +246,7 @@ public class CRSStudent {
             System.out.println("Course was not dropped from the cart.");
         }
     }
-//function to add course
+//Function to add course
     private void addCourse() {
 
         System.out.println("=======================================");
@@ -259,7 +260,7 @@ public class CRSStudent {
 
         boolean courseAdded = false;
         try {
-            courseAdded = sro.addCourse(studentID, 1, courseID, isPrimary);
+            courseAdded = sro.addCourse(studentID,courseID, isPrimary);
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -272,7 +273,7 @@ public class CRSStudent {
             System.out.println("Course was not added to the cart.");
         }
     }
-// function to view Available Course
+// Function to view Available Course
     private void viewAvailableCourses() {
         /* HashMap<String, Course> courseCatalog = null;
         courseCatalog = sro.viewCourseCatalog();
@@ -289,10 +290,14 @@ public class CRSStudent {
             System.out.println("Course ID : "+c.getCourseCode() +"\t Available seats : "+c.getNumberOfSeats()+" \t Instructor : "+c.getInstructorId()+" \t Course Name : "+ c.getCourseName());
         }
     }
-//function View Registered Course
-    private void viewRegisteredCourses(String studentID, int semesterID) throws StudentNotRegisteredException, SQLException {
+//Function View Registered Course
+    private void viewRegisteredCourses(String studentID) throws StudentNotRegisteredException, SQLException {
 
-        sro.viewRegisteredCourses(studentID, semesterID);
+        List<Course> courses = sro.viewRegisteredCourses(studentID);
+        for(Course c:courses)
+        {
+            System.out.println("Coursename: "+c.getCourseCode()+"\t InstructorID: "+ c.getInstructorId());
+        }
         createStudentMenu(studentID);
     }
 // Function to view grade card

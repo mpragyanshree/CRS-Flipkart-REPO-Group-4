@@ -8,6 +8,12 @@ import com.flipkart.exception.PaymentFailedException;
 
 
 public class PaymentImplementation implements PaymentInterface{
+
+    /**
+     * Method to make Payment
+     * @param payment
+     * @return  void
+     */
     public void makePayment(FeePayment payment) {
         try {
             PaymentDaoInterface paymentObj = new PaymentDaoImplementation();

@@ -55,7 +55,7 @@ public class CRSProfessor {
                 System.out.println("Choose an option : ");
                 System.out.println("1 : View registered students");
                 System.out.println("2 : Add Grade");
-                System.out.println("3 : Show Registered courses");
+                System.out.println("3 : Show available courses to choose");
                 System.out.println("4 : Register for a course");
                 System.out.println("5 : Logout");
                 System.out.println("=======================================");
@@ -66,25 +66,28 @@ public class CRSProfessor {
                 switch(menuOption) {
                     case 1 :
                         // View list of enrolled students for a course in a given semester.
-                        viewRegisteredStudents();
+                        viewRegisteredStudents(username);
                         break;
 
                     case 2 :
                         // Add grade for a student in a course.
-                        addGrade();
+                        addGrade(username);
                         break;
 
                     case 3:
                         // Professor opt-in for a course.
-                        viewRegisteredCourses();
+                        viewRegisteredCourses(username);
                         break;
 
                     case 4:
-                        registerCourses();
+                        registerCourses(username);
+                        break;
 
                     case 5 :
-                        return ;
-
+                        System.out.println("Logging Out ...");
+                        CRSApplication crsapp = new CRSApplication();
+                        crsapp.createMenu();
+                        break;
 
                     default:
                         System.out.println("Invalid input");
@@ -95,8 +98,8 @@ public class CRSProfessor {
             e.printStackTrace();
         }
     }
-
-    private void viewRegisteredStudents() throws CourseNotFoundException {
+    //Function to view registered students
+    private void viewRegisteredStudents(String username) throws CourseNotFoundException {
 
         String courseID;
 
@@ -106,6 +109,7 @@ public class CRSProfessor {
         try {
             if(true){ // validation pending
                 profObj.viewRegisteredStudents(professorID,courseID);
+                createProfessorMenu(username);
             }
             else{
 //                logger.error("Invalid Semester");
@@ -118,25 +122,24 @@ public class CRSProfessor {
         }
 
     }
-
-    private void addGrade() throws CourseNotFoundException, GradeNotAddedException {
+    //Function to add Grades
+    private void addGrade(String username) throws CourseNotFoundException, GradeNotAddedException {
 
 
             String courseID,grade;
             String studentID;
             System.out.println("Enter student ID: ");
             studentID = sc.nextLine();
-            sc.nextLine();
             System.out.println("Enter course ID: ");
-            sc.nextLine();
             courseID = sc.nextLine();
             System.out.println("Enter Grade: ");
             grade = sc.nextLine();
-            sc.nextLine();
 
             try{
             if(true) { // validation pending
                 profObj.addGrade(studentID,courseID,grade);
+                createProfessorMenu(username);
+
             }
             else{
 //            logger.error("Invalid Grade!!");
@@ -147,26 +150,31 @@ public class CRSProfessor {
             }
 
     }
-    private void viewRegisteredCourses() {
+
+    //Function to view all registered courses
+    private void viewRegisteredCourses(String username ) {
 
 
 //        System.out.println("Enter Semester ID: ");
 //        semesterID = sc.nextInt();
 
         profObj.viewRegisteredCourses();
+        createProfessorMenu(username);
 
 
     }
 
-    private void registerCourses() throws ProfessorCourseRegistrationException {
+    //Function for Professor to register for courses to teach
+    private void registerCourses(String username) throws ProfessorCourseRegistrationException {
         String courseID,professorID;
-        System.out.println("Enter course ID: ");
-        professorID = sc.nextLine();
+
+        professorID = username;
         System.out.println("Enter course ID: ");
         courseID = sc.nextLine();
 
         try {
             profObj.registerCourse(professorID, courseID);
+
         }catch (Exception e)
         {
             throw new ProfessorCourseRegistrationException();

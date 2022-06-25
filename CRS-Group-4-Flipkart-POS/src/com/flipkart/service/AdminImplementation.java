@@ -37,14 +37,17 @@ public class AdminImplementation {
         }
         return instance;
     }
-    public Course addCourse(String course_name, String courseID, String courseInstructor, int numOfSeats)
+
+    // method to add course
+    public Course addCourse(String courseID, String course_name, String courseInstructor, int numOfSeats)
     {
         try {
             Course newCourse = new Course();
             newCourse.setCourseCode(courseID);
             newCourse.setCourseName(course_name);
-            newCourse.setInstructorId(courseInstructor);
+//            newCourse.setInstructorId(courseInstructor);
             newCourse.setNumberOfSeats(numOfSeats);
+//            System.out.println("Check impl " + newCourse.getCourseName()+" "+newCourse.getCourseCode()+" "+newCourse.getInstructorId()+" "+newCourse.getNumberOfSeats());
             ado.addCourse(newCourse);
             return newCourse;
         }
@@ -55,7 +58,7 @@ public class AdminImplementation {
         }
     }
 
-
+    // method to remove course
     public void removeCourse(String courseID)
     {
         try {
@@ -68,12 +71,14 @@ public class AdminImplementation {
         }
         // remove course based on courseID
     }
+    // method to update course
     public void updateCourse(String course_name, String courseID, int numOfSeats, String courseInstructor){
         // update course as per the given details
         ado.updateCourse(course_name,courseID,numOfSeats,courseInstructor);
     }
 
-    public Professor addProfessor(String username, String name, String password, String department, String joiningDate,String address,String contact)
+    //method to add professor
+    public Professor addProfessor(String username, String name, String password, String department, String designation, String joiningDate,String address,String contact)
     {
         try {
             Professor newProf = new Professor();
@@ -82,6 +87,7 @@ public class AdminImplementation {
             newProf.setName(name);
             newProf.setPassword(password);
             newProf.setDepartment(department);
+            newProf.setDesignation(designation);
             newProf.setJoiningDate(joiningDate);
             newProf.setAddress(address);
             newProf.setContactnum(contact);
@@ -93,6 +99,7 @@ public class AdminImplementation {
             return null;
         }
     }
+    //method to remove professor
     public void removeProfessor(String professorID){
         try {
             ado.removeProfessor(professorID);
@@ -101,11 +108,11 @@ public class AdminImplementation {
             logger.error(ex.getMessage());
         }
     }
-
+    // method to update professor
     public void updateProfessor(String username, String name, String password, String department, String designation, String address, String contact,String joiningDate){
         ado.updateProfessor(username,name,password,contact,joiningDate,address,department,designation);
     }
-
+    //method to add admin
     public Admin addAdmin(String username, String name, String password, String contact, String joiningdate, String address)
     {
         try {
@@ -125,7 +132,7 @@ public class AdminImplementation {
             return null;
         }
     }
-
+    //method to remove admin
     public void removeAdmin(String adminID)
     {
         try {
@@ -136,13 +143,15 @@ public class AdminImplementation {
         }
         return;
     }
+
+    // method to update admin
     public void updateAdmin(String adminId, String name, String password, String contact, String joiningDate,String address)
     {
         ado.updateAdmin(adminId,name,password,contact,joiningDate,address);
         return;
     }
-
-    public void generateGradeCard(String studentID)
+    //method to generate grade card
+    public void generateGradeCard()
     {
        ado.generateGradeCard();
     }
@@ -152,13 +161,16 @@ public class AdminImplementation {
     {
         // view course details based on courseID
     }
+    //method to enable fee payment window
     public void enableFeePaymentWindow(String semesterID){
         ado.enableFeePayment(semesterID);
     }
+    //method to disable fee payment window
     public void disableFeePaymentWindow(String semesterID){
         ado.disableFeePayment(semesterID);
     }
 
+    //method to view available courses
     public ArrayList<Course> viewAvailableCourses(){
         try {
             return ado.viewAvailableCourses();
@@ -169,14 +181,19 @@ public class AdminImplementation {
         }
     }
 
+    //method to view student details
     public void viewStudentDetails(String studentID)
     {
 // View student details based on student ID
     }
+
+    //method to view professor details
     public void viewProfessorDetails(String professorID)
     {
 // view professor details based on professor ID
     }
+
+    //method to view pending student approval list
     public ArrayList<String> viewPendingStudentApproval() {
         return ado.viewPendingStudentApproval();
     }
@@ -191,7 +208,9 @@ public class AdminImplementation {
         }
 
     }
-    public ArrayList<ArrayList<String>>  viewCourseStudentList(String courseID){
+
+    //method to view student details
+    public ArrayList<String>  viewCourseStudentList(String courseID){
         try {
             return ado.viewCourseStudentList(courseID);
         }
@@ -200,6 +219,8 @@ public class AdminImplementation {
             return null;
         }
     }
+
+    //method to view course grades
     public ArrayList<ArrayList<String>> viewCourseGrades(String courseID){
         try {
             return ado.viewCourseGrades(courseID);

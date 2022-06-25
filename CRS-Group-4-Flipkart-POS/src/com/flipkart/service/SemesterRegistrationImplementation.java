@@ -23,11 +23,16 @@ public class SemesterRegistrationImplementation implements SemesterRegistrationI
     private Context.ThrowErrorManager logger;
 
     // function to register course
-    public boolean registerCourses(String studentId, int Semester)
+    /**
+     * Method to register course by student
+     * @param studentId
+     * @return  boolean
+     */
+    public boolean registerCourses(String studentId)
     {
         try {
 
-            Boolean val = srdo.registerCourses(studentId, Semester);
+            Boolean val = srdo.registerCourses(studentId);
             NotificationInterface notificationObj = new NotificationImplementation();
             notificationObj.sendPayFeesNotification();
             return val;
@@ -40,12 +45,19 @@ public class SemesterRegistrationImplementation implements SemesterRegistrationI
         return false;
     }
     // function to add course
-    public boolean addCourse(String studentId, int Semester, String CourseId, boolean isPrimary)
+    /**
+     * Method to add Course
+     * @param studentId
+     * @param CourseId
+     * @param isPrimary
+     * @return  boolean
+     */
+    public boolean addCourse(String studentId, String CourseId, boolean isPrimary)
     {
         //added in dataBase
         try {
 
-            return srdo.addCourse(studentId, 1, CourseId, isPrimary);
+            return srdo.addCourse(studentId, CourseId, isPrimary);
 
         } catch (CourseNotFoundException | CourseSeatsUnavailableException | CourseExistsInCartException e ) {
             //System.out.println("Exception in adding course");
@@ -54,6 +66,13 @@ public class SemesterRegistrationImplementation implements SemesterRegistrationI
         return false;
     }
     // function to drop course
+    /**
+     * Method to drop course
+     * @param studentId
+     * @param SemesterId
+     * @param CourseId
+     * @return  boolean
+     */
     public boolean dropCourse(String studentId, int SemesterId, String CourseId)
     {
         try {
@@ -67,6 +86,10 @@ public class SemesterRegistrationImplementation implements SemesterRegistrationI
 
     }
     //function to view course catalog
+    /**
+     * Method to view course catalog
+     * @return  list of course
+     */
     public ArrayList<Course> viewCourseCatalog()
     {
         /* HashMap<String, Course> courseCatalog = new HashMap<String,Course>();
@@ -90,19 +113,30 @@ public class SemesterRegistrationImplementation implements SemesterRegistrationI
     }
         return null;
     }
-    public void viewRegisteredCourses(String studentId, int Semester)
+    // function to view Registered course
+    /**
+     * Method to view Registered courses
+     * @param studentId
+     * @return  void
+     */
+    public List<Course> viewRegisteredCourses(String studentId) throws StudentNotRegisteredException
     {
-        ArrayList<Course> courses = viewCourseCatalog();
+        /*ArrayList<Course> courses = viewCourseCatalog();
+        */
+        List<Course> courses= SDO.viewRegisteredCourses(studentId);
         if(courses.isEmpty())
         {
             System.out.println("You have not registered for any courses");
-            return;
+            return null;
         }
-        System.out.println("Primary Courses are: ");
+        /*System.out.println("Primary Courses are: ");
         System.out.println(Mycourses1);
         System.out.println("Alternative Courses are: ");
-        System.out.println(Mycourses2);
+        System.out.println(Mycourses2);*/
+        return courses;
     }
+    // function to check payment window
+
     public Boolean checkPaymentWindow(String StudentID)   {
 
       // try {

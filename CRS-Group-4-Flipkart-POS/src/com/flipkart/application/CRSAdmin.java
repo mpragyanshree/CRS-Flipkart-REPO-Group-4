@@ -8,10 +8,26 @@ import java.util.concurrent.TimeUnit;
 import com.flipkart.bean.*;
 import com.flipkart.service.AdminImplementation;
 import com.flipkart.service.AdminInterface;
+import jdk.nashorn.internal.runtime.Context;
+
+/**
+ *
+ * @author JEDI-04
+ * Class that display Admin Client Menu
+ *
+ */
+
 
 public class CRSAdmin {
     private Scanner sc = new Scanner(System.in);
     AdminImplementation ao = AdminImplementation.getInstance();
+    private Context.ThrowErrorManager logger;
+
+
+    /**
+     * Method to Create Admin Menu
+     */
+
 
     public void createAdminMenu (String adminId){
         System.out.println("*************Admin Menu**************");
@@ -87,6 +103,12 @@ public class CRSAdmin {
 
 
     }
+
+    /**
+     * Method to edit course details by admin - add Course, Remove Course, Update course functionalities implemented
+     */
+
+
     private void editCourseDetails(){
         try {
             while(true) {
@@ -128,6 +150,12 @@ public class CRSAdmin {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Method to add course by admin
+     */
+
+
     private void addCourse() {
 
         try{
@@ -139,8 +167,8 @@ public class CRSAdmin {
             course_name = sc.nextLine();
             System.out.println("Course ID: ");
             courseID = sc.nextLine();
-            System.out.println("InstructorId for the course: ");
-            courseInstructor = sc.nextLine();
+//            System.out.println("InstructorId for the course: ");
+            courseInstructor = "";
             System.out.println("Number of seats available");
             numOfSeats = sc.nextInt();
             sc.nextLine();
@@ -151,15 +179,22 @@ public class CRSAdmin {
                 System.out.println("=======================================");
             }
             else {
+                System.out.println(crs);
                 System.out.println("Course Added Successfully!");
                 System.out.println("=======================================");
             }
             //Student stud = so.registerStudent(studentId, name, password, department, formatter.parse(joiningDate),address,contactnum);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return;
     }
+
+    /**
+     * Method to assign Course to a Professor
+     */
+
+
     private void removeCourse() {
         String courseID;
         System.out.println("=======================================");
@@ -175,6 +210,11 @@ public class CRSAdmin {
             e.printStackTrace();
         }
     }
+
+    /**
+	 * Method to update course details by admin
+	 */
+
     private void updateCourse() {
 
         try{
@@ -202,6 +242,12 @@ public class CRSAdmin {
             e.printStackTrace();
         }
     }
+
+    /**
+	 * Method to add or remove professor by admin
+	 */
+
+
     private void addRemoveProfessor(){
         try {
 
@@ -243,6 +289,12 @@ public class CRSAdmin {
             e.printStackTrace();
         }
     }
+
+    /**
+	 * Method to add professor by admin
+	 */
+
+
     private void addProfessor(){
 
         try {
@@ -269,10 +321,10 @@ public class CRSAdmin {
             address = sc.nextLine();
             System.out.println("Joining Date, Please enter in format dd-mm-yyyy");
             joiningDate = sc.nextLine();
-            sc.nextLine();
+//            sc.nextLine();
 
             //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-            Professor prof = ao.addProfessor(username, name, password, department, joiningDate,address,contact);
+            Professor prof = ao.addProfessor(username, name, password, department, designation, joiningDate,address,contact);
             if(prof == null) {
                 System.out.println("User Was not added");
                 System.out.println("=======================================");
@@ -290,6 +342,12 @@ public class CRSAdmin {
         }
 
     }
+
+    /**
+     *
+     * Function for admin to remove professor
+     */
+
     private void removeProfessor() {
         System.out.println("Enter Instructor ID :");
         String professorID = sc.nextLine();
@@ -298,13 +356,18 @@ public class CRSAdmin {
 
         try {
             ao.removeProfessor(professorID);
-            System.out.println("Professor removed successfully!!! Returning you to main menu");
             TimeUnit.SECONDS.sleep(3);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     *
+     * Function for admin to update professor details
+     */
+
     private void updateProfessor(){
 
         try {
@@ -332,7 +395,7 @@ public class CRSAdmin {
             contact = sc.nextLine();
             System.out.println("Joining date. Please enter in format dd-mm-yyyy");
             joiningDate = sc.nextLine();
-            sc.nextLine();
+//            sc.nextLine();
             //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
             ao.updateProfessor(username, name, password, department, designation, address, contact, joiningDate);
             System.out.println("Professor updated successfully!!! Returning you to main menu");
@@ -348,6 +411,13 @@ public class CRSAdmin {
         }
 
     }
+
+    /**
+     *
+     * Function to add or remove admin
+     */
+
+
     private void addRemoveAdmin(){
         try {
 
@@ -389,6 +459,12 @@ public class CRSAdmin {
             e.printStackTrace();
         }
     }
+
+
+    /**
+     *
+     * Function to add admin by another admin
+     */
     private void addAdmin(){
         try {
 
@@ -411,7 +487,7 @@ public class CRSAdmin {
             address = sc.nextLine();
             System.out.println("Joining Date, Please add in format dd-mm-yyyy");
             joiningdate = sc.nextLine();
-            sc.nextLine();
+//            sc.nextLine();
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
             Admin ad = ao.addAdmin(username, name, password, contact, joiningdate,address);
             if(ad == null) {
@@ -433,6 +509,11 @@ public class CRSAdmin {
             e.printStackTrace();
         }
     }
+
+    /**
+     *
+             * Function remove admin by another admin
+     */
     private void removeAdmin() {
         System.out.println("Enter Admin's user ID to remove :");
         String adminID;
@@ -440,7 +521,7 @@ public class CRSAdmin {
         //sc.nextLine();
 
         try {
-            ao.removeAdmin(adminID); //remove admin based on userID
+            ao.removeAdmin(adminID);
             System.out.println("Admin removed successfully!!! Returning you to main menu");
             TimeUnit.SECONDS.sleep(3);
 
@@ -448,6 +529,12 @@ public class CRSAdmin {
             e.printStackTrace();
         }
     }
+
+    /**
+     *
+     * Function to update admin details by admin
+     */
+
     private void updateAdmin(){
 
         try {
@@ -500,6 +587,11 @@ public class CRSAdmin {
 
     }
 
+    /**
+     *
+     * Function to enable disable payment window by admin
+     */
+
     private void enabledisableFeePaymentWindow(){
         System.out.println("=======================================");
         int a = 0 ;
@@ -540,6 +632,12 @@ public class CRSAdmin {
         }
 
     }
+
+    /**
+     *
+     * Function to view available course
+     */
+
     private void viewAvailableCourses() {
 
         ArrayList<Course> alcourse = ao.viewAvailableCourses();
@@ -554,6 +652,12 @@ public class CRSAdmin {
 
 
     }
+
+    /**
+     *
+     * Function to approve student registration
+     */
+
     private void approveStudentRegistration() {
         int semester;
         String studentID;
@@ -562,6 +666,7 @@ public class CRSAdmin {
         ArrayList<String> pendingstudents = new ArrayList<>();
         pendingstudents = ao.viewPendingStudentApproval();
         int i;
+        System.out.println("check");
         for (i = 0; i<pendingstudents.size(); i++) {
             String studID = pendingstudents.get(i);
             System.out.println(studID);
@@ -580,27 +685,35 @@ public class CRSAdmin {
                 break;
             }
 
-
-
         }
         return;
 
-
-
     }
+
+    /**
+     *
+     * Function to view registered students for a particular course
+     */
+
     private void viewCourseStudentList(){
         System.out.println("Please enter Course ID to view Student List");
         String courseID = sc.nextLine();
-        ArrayList<ArrayList<String>> course_students = ao.viewCourseStudentList(courseID);
+        ArrayList<String> course_students = ao.viewCourseStudentList(courseID);
         System.out.println("Here is the list of students registered in course: " + courseID);
-        for (ArrayList<String> i: course_students){
-            System.out.println("Student ID" + i.get(0) + "Name : " + i.get(1));
+        for (String st:course_students){
+            System.out.println("Student ID: " + st);
         }
         // fetch student list;
         return;
 
-
     }
+
+    /**
+     *
+     * Function to view Grades of all Registered Students for a particular course
+     */
+
+
     private void viewCourseGrades(){
         System.out.println("Please enter Course ID to view Grades");
         String courseID = sc.nextLine();
@@ -613,10 +726,16 @@ public class CRSAdmin {
 
     }
 
+    /**
+     *
+     * Function to Generate Grade Card
+     */
+
+
     public void generateGradeCard() {
-        System.out.println("Please enter StudentId for which gradecard needs to be generated");
-        String studentId = sc.nextLine();
-        ao.generateGradeCard(studentId);
+        //System.out.println("Please enter semester for which gradecard needs to be generated");
+        //String semester= sc.nextLine();
+        ao.generateGradeCard();
         System.out.println("Grade Cards generated successfully, now available for students to view!");
     }
 }

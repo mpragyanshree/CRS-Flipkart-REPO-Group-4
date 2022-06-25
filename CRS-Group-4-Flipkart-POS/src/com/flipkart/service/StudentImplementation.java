@@ -1,5 +1,6 @@
 package com.flipkart.service;
 
+import com.flipkart.bean.Grade;
 import com.flipkart.bean.Student;
 import com.flipkart.exception.*;
 
@@ -14,12 +15,24 @@ import jdk.nashorn.internal.runtime.Context;
 
 public class StudentImplementation implements StudentInterface {
     StudentDaoInterface SDO =StudentDaoImplementation.getInstance();
-    public Student registerStudent(String name, String password, String department, String joiningDate, String address, String contactnum)
+
+    //Function for student to register
+    /**
+     * Method to register student
+     * @param name
+     * @param password
+     * @param department
+     * @param joiningDate
+     * @param address
+     * @param contactnum
+     * @return  student
+     */
+    public Student registerStudent(String studentId,String name, String password, String department, String joiningDate, String address, String contactnum)
     {
         try {
             Student newStudent = new Student();
-            //newStudent.setUserId(studentId);
-            //newStudent.setStudentId(studentId);
+            newStudent.setUserId(studentId);
+            newStudent.setStudentId(studentId);
             newStudent.setName(name);
             newStudent.setPassword(password);
             newStudent.setDepartment(department);
@@ -37,10 +50,23 @@ public class StudentImplementation implements StudentInterface {
         }
 
     }
+
+    // Function to view the grade card
+    /**
+     * Method to view grade card
+     * @param studentID
+     * @param semesterID
+     * @return  void
+     */
     public void viewGradeCard(String studentID, int semesterID)
     {
         try {
-            SDO.viewReportCard(studentID);
+            List<Grade> R = SDO.viewReportCard(studentID);
+            System.out.println("Semester: 1 Grade Card");
+            for(Grade g: R)
+            {
+                System.out.println("courseid :" +g.getCourseId() + "   Grade: "+ g.getGrade());
+            }
         }
         catch (ReportCardNotGeneratedException | GradeNotAddedException | StudentNotApprovedException | FeesPendingException e) {
             System.out.println("Exception while viewing Grade Card");

@@ -12,7 +12,7 @@ package com.flipkart.exception;
      */
 
 public class CourseAlreadyPresentException extends Exception{
-    private String courseID;
+    private final String courseID;
 
     public CourseAlreadyPresentException() {
         // TODO Auto-generated constructor stub
@@ -34,7 +34,7 @@ public class CourseAlreadyPresentException extends Exception{
 
     @Override
     public String getMessage() {
-        return "CourseID: " + courseID + " is already present in catalog!";
+        return "CourseID: " + "none" + " is already present in catalog!";
     }
 
 }

@@ -54,27 +54,24 @@ public class PaymentDaoImplementation implements PaymentDaoInterface {
                 }
 
                 payment.setPaymentId(newID);
-
-                String sql = SQLQueries.MAKE_PAYMENT;
-
-                statement = connection.prepareStatement(sql);
-
                 payment.setPaymentStatus(true);
                 payment.setAmount(10000);
                 n.setNotificationSent(true);
                 n.setNotificationId(newnotificationID);
+                System.out.println("Hello3");
+                String sql = SQLQueries.MAKE_PAYMENT;
 
+                statement = connection.prepareStatement(sql);
                 statement.setString(1, payment.getStudentId());
                 statement.setInt(2, payment.getAmount());
-                statement.setTime(3, payment.getPaymentTime());
+                //statement.setTime(3, payment.getPaymentTime());
+                statement.setTimestamp(3,new java.sql.Timestamp(new java.util.Date().getTime()));
                 statement.setBoolean(4, payment.getPaymentStatus());
                 statement.setString(5, payment.getPaymentMode());
                 statement.setString(6, payment.getPaymentId());
                 statement.setBoolean(7,n.getNotificationSent());
                 statement.setString(8,n.getNotificationId());
                 statement.executeUpdate();
-
-
                 // Generate Notification
                 NotificationInterface notificationObj = new NotificationImplementation();
                 notificationObj.sendPaymentCompleteNotification(payment.getStudentId(), payment.getAmount(), payment.getPaymentTime(), payment.getPaymentStatus(), payment.getPaymentMode(), newID, newnotificationID, n.getNotificationMSG());

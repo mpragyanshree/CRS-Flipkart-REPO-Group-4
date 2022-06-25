@@ -11,18 +11,36 @@ import com.flipkart.service.StudentInterface;
 import com.flipkart.service.StudentImplementation;
 import com.flipkart.service.UserInterface;
 import com.flipkart.service.UserImplementation;
-//import org.apache.logging.log4j.LogManager;
-//import org.apache.logging.log4j.Logger;
+
+
+/**
+ *
+ * @author JEDI-04
+ * This class is used as the main entry point of the application
+ * In main menu to login, register are displayed
+ *
+ */
+
+
+
+
 
 public class CRSApplication {
     private Scanner sc = new Scanner(System.in);
-    //private static final Logger logger =  LogManager.getLogger(CRSApplication.class);
     StudentImplementation so=new StudentImplementation();
 
     public static void main(String[] args) {
         CRSApplication newUser = new CRSApplication();
         newUser.createMenu();
     }
+
+
+
+    /**
+     * Method to Create Main Menu
+     */
+
+
     public void createMenu() {
         try {
             while(true) {
@@ -69,6 +87,13 @@ public class CRSApplication {
         }
     }
 
+
+
+    /**
+     * Method for Login functionality
+     */
+
+
     public void loginUser()
     {
         String username, password, role;
@@ -86,8 +111,6 @@ public class CRSApplication {
             UserImplementation uo = new UserImplementation();
 
             if (uo.loginUser(username, password, role)) {
-//           DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-//            LocalDateTime now = LocalDateTime.now();
                 switch (role) {
                     case "student":
                         System.out.println("=======================================");
@@ -125,8 +148,13 @@ public class CRSApplication {
         catch (Exception e) {
             e.printStackTrace();
         }
-       // System.out.println("User Logged in !! \n");
     }
+
+
+    /**
+     * Method to update password of User
+     */
+
 
     public void updatePassword()
     {
@@ -140,17 +168,24 @@ public class CRSApplication {
 
             UserImplementation uo = new UserImplementation();
            // if(uo.loginUser(username, oldPassword, role))
-            //{
+
             System.out.println("=======================================");
             System.out.print("Enter new Password: ");
             newPassword = sc.nextLine();
             uo.updatePassword(username, newPassword); //function calling
-           // }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println("Updated Password !! \n");
     }
+
+
+
+    /**
+     * Method to help Student register themselves, pending admin approval
+     */
+
 
     public void  selfRegisterStudent()
     {
@@ -161,23 +196,22 @@ public class CRSApplication {
             System.out.println("=======================================");
             System.out.println("Enter your details");
             System.out.println("---------------------------------------");
-            //System.out.print("StudentId: ");
-            //studentId = sc.nextLine();
+            System.out.print("Student ID: ");
+            studentId = sc.nextLine();
             System.out.print("Password: ");
             password = sc.nextLine();
             System.out.print("Name: ");
             name = sc.nextLine();
             System.out.print("Department: ");
             department = sc.nextLine();
-            System.out.print("Joining Date, Please enter in format dd-MM-YYYY: ");
+            System.out.print("Jining Date, Please enter in format dd-MM-YYYY: ");
             joiningDate = sc.nextLine();
             System.out.print("Address: ");
             address = sc.nextLine();
             System.out.print("Contact Number: ");
             contactnum = sc.nextLine();
             System.out.println("=======================================");
-            //impleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-            Student stud = so.registerStudent(name, password, department, joiningDate,address,contactnum);
+            Student stud = so.registerStudent(studentId,name, password, department, joiningDate,address,contactnum);
             if(stud == null) {
                 System.out.println("Student Was not added");
                 System.out.println("=======================================");

@@ -36,8 +36,7 @@ public  class ProfessorDaoImplementation implements ProfessorDaoInterface {
         return instance;
     }
 
-    @Override
-    public List<RegisteredStudents> getRegisteredStudents(String professorID, String courseID){
+    public List<RegisteredStudents> getRegisteredStudents(String professorID, String courseID) throws NoStudentInCourseException{
         Connection connection=DBUtil.getConnection();
         List<RegisteredStudents> registeredStudents=new ArrayList<RegisteredStudents>();
 
@@ -45,25 +44,51 @@ public  class ProfessorDaoImplementation implements ProfessorDaoInterface {
         try {
             PreparedStatement statement = connection.prepareStatement(SQLQueries.GET_REGISTERED_STUDENTS);
             statement.setString(1, courseID);
+            statement.setString(2, professorID);
             ResultSet results = statement.executeQuery();
-            while(results.next())
-            {
+
+
+
+            while(results.next()){
                 //public EnrolledStudent(String courseCode, String courseName, int studentId)
                 registeredStudents.add(new RegisteredStudents(results.getString("coursecode"),results.getString("studentid")));
+
             }
+           if(registeredStudents.isEmpty()) throw new NoStudentInCourseException(courseID);
+
         }
         catch (SQLException e) {
 
             e.printStackTrace();
         }
 
+
         return registeredStudents;
     }
 
 
-    public Boolean addGrade(String studentID,String courseID,String grade)  {
+
+    public Boolean addGrade(String studentID,String courseID,String grade) throws GradeNotAddedException,StudentNotRegisteredException  {
         Connection connection=DBUtil.getConnection();
         try {
+
+            PreparedStatement checkStmt = connection.prepareStatement(SQLQueries.CHECK_REGISTRATION);
+            checkStmt.setString(1, studentID);
+            checkStmt.setString(2, courseID);
+            ResultSet rs = checkStmt.executeQuery();
+
+            if(!rs.next()) {
+                throw new StudentNotRegisteredException();
+            }
+
+            if(!rs.getBoolean("isapproved")) {
+                throw new StudentNotRegisteredException();
+
+            }
+
+
+
+
             PreparedStatement statement = connection.prepareStatement(SQLQueries.ADD_GRADE);
 
             statement.setString(1, grade);
@@ -75,12 +100,13 @@ public  class ProfessorDaoImplementation implements ProfessorDaoInterface {
             if(row==1)
                 return true;
             else {
-                return false;
+                throw new GradeNotAddedException(studentID);
+
             }
         }
         catch(SQLException e)
         {
-            System.out.println("error encountered");
+            System.out.println(e.getMessage());
         }
         finally
         {
@@ -105,7 +131,10 @@ public  class ProfessorDaoImplementation implements ProfessorDaoInterface {
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-                viewAvailableCouse.add(new Course(rs.getString("courseCode"), rs.getString("courseName"), rs.getString("professorId"), rs.getInt("seats")));
+             //   System.out.println(rs.getString("coursecode"));
+
+
+                viewAvailableCouse.add(new Course(rs.getString("coursecode"), rs.getString("coursename"), rs.getString("instructorid"), rs.getInt("numberOfSeats")));
             }
 
 
@@ -118,17 +147,23 @@ public  class ProfessorDaoImplementation implements ProfessorDaoInterface {
                 e.printStackTrace();
             }
         }
+
         return viewAvailableCouse;
     }
 
     @Override
-    public boolean registerCourse(String professorID, String courseId){
+    public boolean registerCourse(String professorID, String courseId) throws CourseExistsInCartException{
         Connection connection = DBUtil.getConnection();
 
         try {
+
+
+         //   System.out.println("wowow");
             PreparedStatement statement = connection.prepareStatement(SQLQueries.IS_AVAILABLE_COURSE_PROFESSOR);
             statement.setString(1, courseId);
             ResultSet rs = statement.executeQuery();
+
+       //    System.out.println(rs.getString("coursecode"));
 
             if(rs.next()) {
                 PreparedStatement statement2 = connection.prepareStatement(SQLQueries.REGISTER_COURSE_PROFESSOR);
@@ -136,10 +171,10 @@ public  class ProfessorDaoImplementation implements ProfessorDaoInterface {
                 statement2.setString(1, professorID);
                 statement2.setString(2, courseId);
 
-                ResultSet rs2 = statement2.executeQuery();
+                statement2.executeUpdate();
                 return true;
             } else {
-                return false;
+                throw new CourseExistsInCartException(courseId);
             }
         } catch (SQLException e) {
             e.printStackTrace();

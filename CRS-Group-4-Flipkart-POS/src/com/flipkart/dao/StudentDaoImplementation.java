@@ -52,16 +52,20 @@ public class StudentDaoImplementation implements StudentDaoInterface {
 
         try
         {
-            PreparedStatement stmt = connection.prepareStatement(SQLQueries.GET_MAX_USER_ID);
-            ResultSet results = stmt.executeQuery();
-            String studentId="0";
-            if(results.next()) {
+            //PreparedStatement stmt = connection.prepareStatement(SQLQueries.GET_MAX_STUDENT_ID);
+            /* ResultSet results = stmt.executeQuery();
+            String studentId="200";
+            if(results == null)
+            {
+                studentId="0";
+            }
+            else if(results.next()) {
                 studentId=results.getString(1);
             }
-            int nextstudentid=Integer.parseInt(studentId)+1;
+            int nextstudentid=Integer.valueOf(studentId)+1;
             studentId=Integer.toString(nextstudentid);
             student.setUserId(studentId);
-            student.setStudentId(studentId);
+            student.setStudentId(studentId);*/
 
             PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.ADD_USER);
             preparedStatement.setString(1, student.getUserId());
@@ -73,11 +77,11 @@ public class StudentDaoImplementation implements StudentDaoInterface {
             preparedStatement.setString(7, student.getContactnum());
             preparedStatement.executeUpdate();
 
-
             PreparedStatement preparedStatement1 = connection.prepareStatement(SQLQueries.ADD_STUDENT);
-            preparedStatement1.setString(1, student.getUserId());
+            preparedStatement1.setString(1, student.getStudentId());
             preparedStatement1.setString(2, student.getDepartment());
             preparedStatement1.setBoolean(3, false);
+            preparedStatement1.setBoolean(4, false);
             preparedStatement1.executeUpdate();
 
         }
@@ -93,17 +97,14 @@ public class StudentDaoImplementation implements StudentDaoInterface {
 
         Connection connection = DBUtil.getConnection();
         List<Grade> R = new ArrayList<Grade>();
-
-
         try
         {
             PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.CHECK_GRADECARD);
-            preparedStatement.setString(1, "1");
+            preparedStatement.setString(1,"1");
             ResultSet rc = preparedStatement.executeQuery();
 
-            if(rc.getBoolean(1)) {
-
-
+            rc.next();
+            if(rc.getBoolean("gradecardgenerationwindow")) {
                 PreparedStatement prepareStatement = connection.prepareStatement(SQLQueries.GET_GRADECARD);
                 prepareStatement.setString(1, StudentID);
 
@@ -111,11 +112,10 @@ public class StudentDaoImplementation implements StudentDaoInterface {
 
                 while(rs.next()){
                     Grade g = new Grade();
-                    g.setCourseId(rs.getString("courseID"));
-                    g.setGrade(rs.getString("Grade"));
+                    g.setCourseId(rs.getString("coursecode"));
+                    g.setGrade(rs.getString("grade"));
                     R.add(g);
                 }
-
             }
             else{
                 System.out.println("Report Card not yet generated! Please contact admin for further details.");
@@ -142,27 +142,23 @@ public class StudentDaoImplementation implements StudentDaoInterface {
 
         try
         {
-            PreparedStatement preparedStatement=connection.prepareStatement(SQLQueries.GET_COURSES);
+            PreparedStatement preparedStatement=connection.prepareStatement(SQLQueries.GET_COURSES_STUDENT);
             preparedStatement.setString(1, studentID);
-
-
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
-                String courseId = rs.getString("courseid");
+                String courseId = rs.getString("coursecode");
 
                 PreparedStatement preparedStatement0 = connection.prepareStatement(SQLQueries.GET_COURSE_BY_ID);
                 preparedStatement0.setString(1, courseId);
-
                 ResultSet rs0 = preparedStatement0.executeQuery();
 
                 if(rs0.next()) {
                     Course c = new Course();
                     c.setCourseCode(courseId);
-                    c.setCourseName(rs0.getString("coursename"));
-                    c.setInstructorId(rs0.getString("instructor"));
+                    c.setCourseName(rs0.getString("coursecode"));
+                    c.setInstructorId(rs0.getString("instructorid"));
                     c.setIsprimary(rs.getBoolean("isprimary"));
-
                     registeredCourses.add(c);
                 }
             }
