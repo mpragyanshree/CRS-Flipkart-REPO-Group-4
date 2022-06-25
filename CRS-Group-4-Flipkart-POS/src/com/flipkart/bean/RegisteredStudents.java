@@ -5,9 +5,21 @@ package com.flipkart.bean;
  * Registered Student Class
  */
 public class RegisteredStudents extends Student{
+
     private String courseCode;
     private String courseName;
     private String  studentId;
+    /**
+     * Constructor
+    */
+
+     public RegisteredStudents(String joiningDate, String userId, String name, String role, String password, String address, String contactnum, String department, String studentId, boolean isApproved, String courseCode, String courseName, String studentId1) {
+        super(joiningDate, userId, name, role, password, address, contactnum, department, studentId, isApproved);
+        this.courseCode = courseCode;
+        this.courseName = courseName;
+        this.studentId = studentId1;
+    }
+
 
     /**
      * Method to get course code
@@ -53,14 +65,4 @@ public class RegisteredStudents extends Student{
         this.courseCode = courseCode;
         this.studentId = studentId;
     }
-    /**
-     * Constructor
-     */
-    public RegisteredStudents(String courseCode, String courseName ,String studentId) {
-        super();
-        this.courseCode = courseCode;
-        this.studentId = studentId;
-        this.courseName = courseName;
-    }
-
 }

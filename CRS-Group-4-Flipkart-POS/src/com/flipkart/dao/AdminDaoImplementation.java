@@ -428,10 +428,10 @@ public class AdminDaoImplementation implements AdminDaoInterface {
         ArrayList<String> course_wise_students = new ArrayList<String>();
         try {
             Connection conn = DBUtil.getConnection();
-            System.out.println("check");
+//            System.out.println("check");
             statement = conn.prepareStatement(SQLQueries.ADMIN_GET_REGISTERED_STUDENTS);
             statement.setString(1, courseID);
-            System.out.println("check1");
+//            System.out.println("check1");
             ResultSet rs = statement.executeQuery();
             System.out.println(rs);
 
@@ -440,7 +440,7 @@ public class AdminDaoImplementation implements AdminDaoInterface {
                 System.out.println(studentId);
                 course_wise_students.add(studentId);
             }
-            System.out.println("check2");
+//            System.out.println("check2");
         }
         catch (SQLException e) {
 
@@ -459,16 +459,16 @@ public class AdminDaoImplementation implements AdminDaoInterface {
             Connection conn = DBUtil.getConnection();
             statement = conn.prepareStatement(SQLQueries.ADMIN_GET_COURSE_GRADES);
             statement.setString(1, courseID);
+
             ResultSet rs = statement.executeQuery();
 
-            do {
+            while (rs.next()){
                 ArrayList<String> i = new ArrayList<String>();
                 i.add(rs.getString(1));
                 i.add(rs.getString(2));
-
                 student_grades.add(i);
 
-            } while (rs.next());
+            }
 
 
         }

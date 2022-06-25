@@ -29,7 +29,7 @@ public class SQLQueries {
     // view student details for all the courses
     public static final String ADMIN_GET_REGISTERED_STUDENTS = "select studentid from registeredcourses where coursecode = ?";
     // view student wise grades
-    public static final String ADMIN_GET_COURSE_GRADES = "select studentid, grade from registeredcourses  where courseid = ?";
+    public static final String ADMIN_GET_COURSE_GRADES = "select studentid, grade from registeredcourses  where coursecode = ?";
     /*public static final String ADD_USER_QUERY = "insert into User(userId, name, password, role, gender, address, country) values (?, ?, ?, ?, ?, ?, ?)";
     public static final String ADD_PROFESSOR_QUERY = "insert into Professor(userId, department, designation) values (?, ?, ?)";
     public static final String ASSIGN_COURSE_QUERY = "update Course set professorId = ? where courseCode = ?";

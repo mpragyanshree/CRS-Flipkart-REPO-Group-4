@@ -720,7 +720,7 @@ public class CRSAdmin {
         ArrayList<ArrayList<String>> courseGrades = ao.viewCourseGrades(courseID);
         System.out.println("Here is the grade of students registered in course: " + courseID);
         for (ArrayList<String> i: courseGrades){
-            System.out.println("Student ID" + i.get(0) + "Grade : " + i.get(1));
+            System.out.println("Student ID: " + i.get(0) + "Grade: " + i.get(1));
         }
         return;
 
