@@ -1,4 +1,4 @@
-package com.flipkart.exception;
+package com.dropwizard.exception;
 
 /*
  * Exception arises when payment is failed.

@@ -1,7 +1,7 @@
-package com.flipkart.service;
+package com.dropwizard.service;
 
-import com.flipkart.bean.Course;
-import com.flipkart.bean.RegisteredStudents;
+import com.dropwizard.bean.Course;
+import com.dropwizard.bean.RegisteredStudents;
 
 import java.util.List;
 
@@ -23,13 +23,13 @@ public interface ProfessorInterface {
      * @param course
      * @return  list of registered students
      */
-    public void viewRegisteredStudents(String professorID , String course);
+    public List<RegisteredStudents> viewRegisteredStudents(String professorID , String course);
 
     /**
      * Method to view Registered courses
      * @return  list of registered courses
      */
-    public void viewRegisteredCourses();
+    public List<Course> viewRegisteredCourses();
 
     /**
      * Method to register course

@@ -1,13 +1,13 @@
-package com.flipkart.dao;
+package com.dropwizard.dao;
 import java.sql.SQLException;
 import java.util.*;
-import com.flipkart.bean.Course;
-import com.flipkart.bean.RegisteredStudents;
-import com.flipkart.bean.Student;
-import com.flipkart.exception.CourseExistsInCartException;
-import com.flipkart.exception.GradeNotAddedException;
-import com.flipkart.exception.NoStudentInCourseException;
-import com.flipkart.exception.StudentNotRegisteredException;
+import com.dropwizard.bean.Course;
+import com.dropwizard.bean.RegisteredStudents;
+import com.dropwizard.bean.Student;
+import com.dropwizard.exception.CourseExistsInCartException;
+import com.dropwizard.exception.GradeNotAddedException;
+import com.dropwizard.exception.NoStudentInCourseException;
+import com.dropwizard.exception.StudentNotRegisteredException;
 
 public interface ProfessorDaoInterface {
 

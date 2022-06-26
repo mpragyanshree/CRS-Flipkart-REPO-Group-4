@@ -1,9 +1,9 @@
-package com.flipkart.dao;
+package com.dropwizard.dao;
 
-import com.flipkart.bean.Course;
-import com.flipkart.bean.Grade;
-import com.flipkart.bean.Student;
-import com.flipkart.exception.*;
+import com.dropwizard.bean.Course;
+import com.dropwizard.bean.Grade;
+import com.dropwizard.bean.Student;
+import com.dropwizard.exception.*;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ public interface StudentDaoInterface {
     public Boolean checkPaymentWindow(String StudentID);
 
     public List<Course> viewRegisteredCourses(String studentID) throws StudentNotRegisteredException;
-
+    public String getStudentIDFromUserName(String username) throws StudentNotRegisteredException;
 }

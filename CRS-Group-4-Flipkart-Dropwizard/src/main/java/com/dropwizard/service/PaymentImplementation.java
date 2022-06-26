@@ -1,10 +1,10 @@
-package com.flipkart.service;
-import com.flipkart.bean.FeePayment;
-import com.flipkart.bean.Notification;
-import com.flipkart.dao.PaymentDaoInterface;
-import com.flipkart.dao.PaymentDaoImplementation;
-import com.flipkart.exception.PaymentDoneException;
-import com.flipkart.exception.PaymentFailedException;
+package com.dropwizard.service;
+import com.dropwizard.bean.FeePayment;
+import com.dropwizard.bean.Notification;
+import com.dropwizard.dao.PaymentDaoInterface;
+import com.dropwizard.dao.PaymentDaoImplementation;
+import com.dropwizard.exception.PaymentDoneException;
+import com.dropwizard.exception.PaymentFailedException;
 
 
 public class PaymentImplementation implements PaymentInterface{

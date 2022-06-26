@@ -1,14 +1,14 @@
-package com.flipkart.service;
+package com.dropwizard.service;
 
-import com.flipkart.bean.RegisteredCourses;
-import com.flipkart.bean.RegisteredStudents;
-import com.flipkart.bean.Course;
-import com.flipkart.dao.ProfessorDaoImplementation;
-import com.flipkart.dao.ProfessorDaoInterface;
-import com.flipkart.exception.CourseExistsInCartException;
-import com.flipkart.exception.GradeNotAddedException;
-import com.flipkart.exception.NoStudentInCourseException;
-import com.flipkart.exception.StudentNotRegisteredException;
+import com.dropwizard.bean.RegisteredCourses;
+import com.dropwizard.bean.RegisteredStudents;
+import com.dropwizard.bean.Course;
+import com.dropwizard.dao.ProfessorDaoImplementation;
+import com.dropwizard.dao.ProfessorDaoInterface;
+import com.dropwizard.exception.CourseExistsInCartException;
+import com.dropwizard.exception.GradeNotAddedException;
+import com.dropwizard.exception.NoStudentInCourseException;
+import com.dropwizard.exception.StudentNotRegisteredException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public class ProfessorImplementation implements ProfessorInterface {
      * @param courseID
      * @return  void
      */
-    public void viewRegisteredStudents(String professorID , String courseID) {
+    public List<RegisteredStudents> viewRegisteredStudents(String professorID , String courseID) {
 
         List<RegisteredStudents>ans = new ArrayList<RegisteredStudents>();
 
@@ -92,6 +92,7 @@ public class ProfessorImplementation implements ProfessorInterface {
         catch(Exception e) {
             System.out.println(e.getMessage());
         }
+        return ans;
 
 
     }
@@ -102,7 +103,7 @@ public class ProfessorImplementation implements ProfessorInterface {
 
      * @return  void
      */
-    public void viewRegisteredCourses()
+    public List<Course> viewRegisteredCourses()
     {
         List<Course>ans = new ArrayList<Course>();
 
@@ -123,6 +124,7 @@ public class ProfessorImplementation implements ProfessorInterface {
         catch(Exception e) {
             System.out.println(e.getMessage());
         }
+        return ans;
     }
 
 

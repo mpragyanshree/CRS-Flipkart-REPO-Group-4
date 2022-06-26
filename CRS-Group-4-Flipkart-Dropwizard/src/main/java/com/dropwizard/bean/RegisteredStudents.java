@@ -1,4 +1,4 @@
-package com.flipkart.bean;
+package com.dropwizard.bean;
 
 
 /**

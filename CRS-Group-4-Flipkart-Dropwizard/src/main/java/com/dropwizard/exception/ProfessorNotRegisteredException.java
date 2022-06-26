@@ -1,4 +1,4 @@
-package com.flipkart.exception;
+package com.dropwizard.exception;
 
 //Exception arises when Professor entry is there but no Instructor ID
 public class ProfessorNotRegisteredException extends Exception {

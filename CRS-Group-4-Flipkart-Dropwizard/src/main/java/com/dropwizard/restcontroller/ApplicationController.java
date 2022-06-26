@@ -1,9 +1,9 @@
-package com.flipkart.application;
+package com.dropwizard.restcontroller;
 import java.util.Scanner;
 
-import com.flipkart.bean.Student;
-import com.flipkart.service.StudentImplementation;
-import com.flipkart.service.UserImplementation;
+import com.dropwizard.bean.Student;
+import com.dropwizard.service.StudentImplementation;
+import com.dropwizard.service.UserImplementation;
 
 
 /**
@@ -23,7 +23,7 @@ public class ApplicationController {
     StudentImplementation so=new StudentImplementation();
 
     public static void main(String[] args) {
-        com.flipkart.application.ApplicationController newUser = new com.flipkart.application.ApplicationController();
+        com.dropwizard.restcontroller.ApplicationController newUser = new com.dropwizard.restcontroller.ApplicationController();
         newUser.createMenu();
     }
 

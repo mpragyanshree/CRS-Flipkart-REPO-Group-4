@@ -1,17 +1,17 @@
-package com.flipkart.service;
+package com.dropwizard.service;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import com.flipkart.exception.*;
-import com.flipkart.dao.SemesterRegistrationDaoInterface;
-import com.flipkart.dao.SemesterRegistrationDaoImplementation;
-import com.flipkart.dao.StudentDaoImplementation;
-import com.flipkart.dao.StudentDaoInterface;
+import com.dropwizard.exception.*;
+import com.dropwizard.dao.SemesterRegistrationDaoInterface;
+import com.dropwizard.dao.SemesterRegistrationDaoImplementation;
+import com.dropwizard.dao.StudentDaoImplementation;
+import com.dropwizard.dao.StudentDaoInterface;
 
 
-import com.flipkart.bean.Course;
-import com.flipkart.bean.Notification;
+import com.dropwizard.bean.Course;
+import com.dropwizard.bean.Notification;
 import jdk.nashorn.internal.runtime.Context;
 
 

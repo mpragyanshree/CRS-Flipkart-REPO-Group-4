@@ -1,194 +1,129 @@
-package com.flipkart.application;
-import java.util.*;
+/**
+ *
+ */
+package com.dropwizard.restcontroller;
 
-//import com.flipkart.dao.ProfessorDaoOperation;
-//import com.flipkart.validator.ProfessorValidator;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import com.dropwizard.service.ProfessorImplementation;
+import org.apache.log4j.Logger;
 
 
-import com.flipkart.exception.CourseNotFoundException;
-import com.flipkart.exception.GradeNotAddedException;
-import com.flipkart.exception.ProfessorCourseRegistrationException;
-import com.flipkart.service.ProfessorImplementation;
-//import org.apache.logging.log4j.LogManager;
-//import org.apache.logging.log4j.Logger;
-import com.flipkart.service.ProfessorInterface;
-
-//import com.flipkart.exception.CourseNotFoundException;
-//import com.flipkart.exception.GradeNotAddedException;
-//import com.flipkart.exception.ProfessorNotRegisteredException;
-//import com.flipkart.business.ProfessorInterface;
-//import com.flipkart.business.ProfessorOperation;
-
+/**
+ * @author Dell
+ *
+ */
+@Path("/professor")
 public class ProfessorController {
 
-    public ProfessorController() {
+    private static Logger logger = Logger.getLogger(ProfessorController.class);
 
-
-    }
-
-
-
+    ProfessorImplementation profObj = ProfessorImplementation.getInstance();
+    private int professorID;
 
 
 
-    private Scanner sc = new Scanner(System.in);
-    ProfessorInterface profObj = new ProfessorImplementation();
-    private String professorID;
-
-    public static void main(String[] args) {
-        com.flipkart.application.ProfessorController test = new com.flipkart.application.ProfessorController();
-        test.createProfessorMenu("testing");
-    }
-
-    // Home page for a Professor Login.
-    public void createProfessorMenu(String username) {
-        try {
-
-            professorID = username;
-
-            while(true) {
-
-                System.out.println("\n\n==~~=~~=~~=~~=~Professor Panel~=~~=~~=~~=~~==");
-                System.out.println("Choose an option : ");
-                System.out.println("1 : View registered students");
-                System.out.println("2 : Add Grade");
-                System.out.println("3 : Show available courses to choose");
-                System.out.println("4 : Register for a course");
-                System.out.println("5 : Logout");
-                System.out.println("=======================================");
-
-                int menuOption = sc.nextInt();
-                sc.nextLine();
-
-                switch(menuOption) {
-                    case 1 :
-                        // View list of enrolled students for a course in a given semester.
-                        viewRegisteredStudents(username);
-                        break;
-
-                    case 2 :
-                        // Add grade for a student in a course.
-                        addGrade(username);
-                        break;
-
-                    case 3:
-                        // Professor opt-in for a course.
-                        viewRegisteredCourses(username);
-                        break;
-
-                    case 4:
-                        registerCourses(username);
-                        break;
-
-                    case 5 :
-                        System.out.println("Logging Out ...");
-                        CRSApplication crsapp = new CRSApplication();
-                        crsapp.createMenu();
-                        break;
-
-                    default:
-                        System.out.println("Invalid input");
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    //Function to view registered students
-    private void viewRegisteredStudents(String username) throws CourseNotFoundException {
-
-        String courseID;
-
-        System.out.println("Enter course ID: ");
-        courseID= sc.nextLine();
+    // register for a course
+    @POST
+    @Path("/registerCourse")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response registerCourse(@NotNull
+                                   @QueryParam("username") String username,
+                                   @NotNull
+                                   @QueryParam("courseId") String courseId
+                                   ) {
 
         try {
-            if(true){ // validation pending
-                profObj.viewRegisteredStudents(professorID,courseID);
-                createProfessorMenu(username);
-            }
-            else{
-//                logger.error("Invalid Semester");
-                System.out.println("invalid course ID");
-            }
 
+            profObj.registerCourse(username, courseId);
         }
         catch(Exception e) {
-            throw new CourseNotFoundException(courseID);
+            return Response.status(500).entity(e.getMessage()).build();
         }
-
-    }
-    //Function to add Grades
-    private void addGrade(String username) throws CourseNotFoundException, GradeNotAddedException {
-
-
-            String courseID,grade;
-            String studentID;
-            System.out.println("Enter student ID: ");
-            studentID = sc.nextLine();
-            System.out.println("Enter course ID: ");
-            courseID = sc.nextLine();
-            System.out.println("Enter Grade: ");
-            grade = sc.nextLine();
-
-            try{
-            if(true) { // validation pending
-                profObj.addGrade(studentID,courseID,grade);
-                createProfessorMenu(username);
-
-            }
-            else{
-//            logger.error("Invalid Grade!!");
-                System.out.println("invalid grade");
-            }
-            }catch(Exception e) {
-                throw new GradeNotAddedException(studentID);
-            }
-
-    }
-
-    //Function to view all registered courses
-    private void viewRegisteredCourses(String username ) {
-
-
-//        System.out.println("Enter Semester ID: ");
-//        semesterID = sc.nextInt();
-
-        profObj.viewRegisteredCourses();
-        createProfessorMenu(username);
+        return Response.status(200).entity( "Successfully Registered").build();
 
 
     }
 
-    //Function for Professor to register for courses to teach
-    private void registerCourses(String username) throws ProfessorCourseRegistrationException {
-        String courseID,professorID;
+    // View all available courses for a given professor
+    @GET
+    @Path("/getAvailableCourses")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response viewAvailableCourses() {
 
-        professorID = username;
-        System.out.println("Enter course ID: ");
-        courseID = sc.nextLine();
 
         try {
-            profObj.registerCourse(professorID, courseID);
-
-        }catch (Exception e)
-        {
-            throw new ProfessorCourseRegistrationException();
-        }
-    }
-
-    // Get ID of professor by providing username.
-    /*private String getProfessorID(String username){
-
-
-        ProfessorInterface po = ProfessorImplementation.getInstance();
-        try {
-            return po.getProfessorID(username);
+            return Response.ok(profObj.viewRegisteredCourses(),MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
+            logger.error(e.getMessage());
+            return Response.status(500).entity(e.getMessage()).build();
 
-            System.out.println("error");
         }
-        return "";
-    }*/
+
+
+    }
+
+
+    // Add grade for a given student in a specific course and semester
+    @POST
+    @Path("/addGrade")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addGrade(@NotNull
+                             @QueryParam("studentId") String studentId,
+
+                             @NotNull
+                             @QueryParam("courseId") String courseId,
+
+                             @QueryParam("grade") String grade)  {
+
+        try {
+
+            profObj.addGrade(studentId, courseId, grade);
+
+        }
+        catch(Exception ex){
+            return Response.status(500).entity(ex.getMessage()).build();
+        }
+
+
+        return Response.status(200).entity( "Grade updated for student: "+studentId).build();
+    }
+
+
+    // View all registered students for a given course and semesterID
+    @GET
+    @Path("/getRegisteredStudents")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response viewEnrolledStudents(@NotNull
+                                         @QueryParam("username") String username,
+                                         @NotNull
+                                         @QueryParam("courseId") String courseId){
+
+
+        try {
+
+            return Response.ok(profObj.viewRegisteredStudents(username, courseId),MediaType.APPLICATION_JSON).build();
+        }
+        catch(Exception e) {
+
+            return Response.status(500).entity(e.getMessage()).build();
+        }
+
+
+    }
+
+
+
 }

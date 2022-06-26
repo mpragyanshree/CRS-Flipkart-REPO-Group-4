@@ -1,8 +1,8 @@
-package com.flipkart.dao;
-import com.flipkart.bean.Notification;
-import com.flipkart.bean.FeePayment;
-import com.flipkart.constant.SQLQueries;
-import com.flipkart.utils.DBUtil;
+package com.dropwizard.dao;
+import com.dropwizard.bean.Notification;
+import com.dropwizard.bean.FeePayment;
+import com.dropwizard.constant.SQLQueries;
+import com.dropwizard.utils.DBUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

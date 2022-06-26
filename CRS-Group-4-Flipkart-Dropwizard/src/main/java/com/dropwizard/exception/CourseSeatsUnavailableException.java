@@ -1,4 +1,4 @@
-package com.flipkart.exception;
+package com.dropwizard.exception;
 
 // Exception arises when a student tries to choose a course which already has maximum allowed number of students.
 public class CourseSeatsUnavailableException extends Exception {

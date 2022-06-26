@@ -1,4 +1,4 @@
-package com.flipkart.exception;
+package com.dropwizard.exception;
 
 
 // when professor is not assigned to any course

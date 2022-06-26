@@ -1,4 +1,4 @@
-package com.flipkart.exception;
+package com.dropwizard.exception;
 
 //Exception arises when appropriate student details can't be found or are not present
 public class StudentNotRegisteredException extends Exception {

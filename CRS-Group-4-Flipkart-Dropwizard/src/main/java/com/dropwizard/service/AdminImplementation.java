@@ -1,18 +1,18 @@
-package com.flipkart.service;
+package com.dropwizard.service;
 
 
-import com.flipkart.bean.Course;
-import com.flipkart.bean.Grade;
-import com.flipkart.bean.Student;
-import com.flipkart.bean.Professor;
-import com.flipkart.bean.Admin;
-import com.flipkart.dao.AdminDaoImplementation;
-import com.flipkart.dao.AdminDaoInterface;
-import com.flipkart.dao.StudentDaoImplementation;
-import com.flipkart.dao.StudentDaoInterface;
-import com.flipkart.dao.ProfessorDaoImplementation;
-import com.flipkart.dao.ProfessorDaoInterface;
-import com.flipkart.exception.*;
+import com.dropwizard.bean.Course;
+import com.dropwizard.bean.Grade;
+import com.dropwizard.bean.Student;
+import com.dropwizard.bean.Professor;
+import com.dropwizard.bean.Admin;
+import com.dropwizard.dao.AdminDaoImplementation;
+import com.dropwizard.dao.AdminDaoInterface;
+import com.dropwizard.dao.StudentDaoImplementation;
+import com.dropwizard.dao.StudentDaoInterface;
+import com.dropwizard.dao.ProfessorDaoImplementation;
+import com.dropwizard.dao.ProfessorDaoInterface;
+import com.dropwizard.exception.*;
 import jdk.nashorn.internal.runtime.Context;
 
 //import java.util.Date;

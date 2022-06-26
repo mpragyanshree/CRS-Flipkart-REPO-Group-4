@@ -1,7 +1,7 @@
-package com.flipkart.service;
-import com.flipkart.bean.Notification;
-import com.flipkart.dao.NotificationDaoImplementation;
-import com.flipkart.dao.NotificationDaoInterface;
+package com.dropwizard.service;
+import com.dropwizard.bean.Notification;
+import com.dropwizard.dao.NotificationDaoImplementation;
+import com.dropwizard.dao.NotificationDaoInterface;
 
 import java.sql.Time;
 import java.time.LocalTime;

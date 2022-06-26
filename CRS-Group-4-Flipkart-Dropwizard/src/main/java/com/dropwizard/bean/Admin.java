@@ -1,5 +1,5 @@
-package com.flipkart.bean;
-
+package com.dropwizard.bean;
+import com.dropwizard.bean.User;
 import java.sql.Date;
 /**
 Admin Class

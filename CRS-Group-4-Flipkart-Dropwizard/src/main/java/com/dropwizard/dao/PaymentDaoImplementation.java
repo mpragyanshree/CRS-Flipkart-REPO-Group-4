@@ -1,13 +1,13 @@
-package com.flipkart.dao;
-import com.flipkart.bean.FeePayment;
-import com.flipkart.bean.Notification;
-import com.flipkart.service.NotificationInterface;
-import com.flipkart.service.NotificationImplementation;
-import com.flipkart.constant.SQLQueries;
-import com.flipkart.exception.PaymentDoneException;
-import com.flipkart.exception.PaymentFailedException;
-import com.flipkart.service.PaymentImplementation;
-import com.flipkart.utils.DBUtil;
+package com.dropwizard.dao;
+import com.dropwizard.bean.FeePayment;
+import com.dropwizard.bean.Notification;
+import com.dropwizard.service.NotificationInterface;
+import com.dropwizard.service.NotificationImplementation;
+import com.dropwizard.constant.SQLQueries;
+import com.dropwizard.exception.PaymentDoneException;
+import com.dropwizard.exception.PaymentFailedException;
+import com.dropwizard.service.PaymentImplementation;
+import com.dropwizard.utils.DBUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

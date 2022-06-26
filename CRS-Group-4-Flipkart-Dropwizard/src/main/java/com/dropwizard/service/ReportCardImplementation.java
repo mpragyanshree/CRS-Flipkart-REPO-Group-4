@@ -1,4 +1,4 @@
-package com.flipkart.service;
+package com.dropwizard.service;
 
 public class ReportCardImplementation {
 }

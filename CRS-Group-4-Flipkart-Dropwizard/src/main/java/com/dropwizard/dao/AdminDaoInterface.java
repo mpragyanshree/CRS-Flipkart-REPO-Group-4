@@ -1,9 +1,9 @@
-package com.flipkart.dao;
-import com.flipkart.bean.Admin;
-import com.flipkart.bean.Course;
-import com.flipkart.bean.Professor;
-import com.flipkart.bean.Student;
-import com.flipkart.exception.*;
+package com.dropwizard.dao;
+import com.dropwizard.bean.Admin;
+import com.dropwizard.bean.Course;
+import com.dropwizard.bean.Professor;
+import com.dropwizard.bean.Student;
+import com.dropwizard.exception.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

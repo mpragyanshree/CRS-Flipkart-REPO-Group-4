@@ -1,8 +1,8 @@
-package com.flipkart.service;
+package com.dropwizard.service;
 
 import java.sql.Date;
 import java.util.List;
-import com.flipkart.bean.Student;
+import com.dropwizard.bean.Student;
 
 public interface StudentInterface {
 
@@ -26,5 +26,6 @@ public interface StudentInterface {
      * @return  void
      */
     public void viewGradeCard(String StudentID, int semesterID);
+    public String getStudentIDFromUserName(String username);
 
 }

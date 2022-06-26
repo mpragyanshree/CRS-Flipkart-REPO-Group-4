@@ -1,4 +1,4 @@
-package com.flipkart.bean;
+package com.dropwizard.bean;
 
 import java.sql.Time;
 import java.time.LocalTime;

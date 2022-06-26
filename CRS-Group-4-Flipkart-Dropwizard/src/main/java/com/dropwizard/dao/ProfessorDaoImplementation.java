@@ -1,4 +1,4 @@
-package com.flipkart.dao;
+package com.dropwizard.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,15 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import com.flipkart.exception.*;
+import com.dropwizard.exception.*;
 
-import com.flipkart.bean.Course;
-import com.flipkart.bean.RegisteredStudents;
-import com.flipkart.bean.Student;
+import com.dropwizard.bean.Course;
+import com.dropwizard.bean.RegisteredStudents;
+import com.dropwizard.bean.Student;
 
-import com.flipkart.constant.SQLQueries;
-import com.flipkart.service.StudentImplementation;
-import com.flipkart.utils.DBUtil;
+import com.dropwizard.constant.SQLQueries;
+import com.dropwizard.service.StudentImplementation;
+import com.dropwizard.utils.DBUtil;
 
 
 public  class ProfessorDaoImplementation implements ProfessorDaoInterface {

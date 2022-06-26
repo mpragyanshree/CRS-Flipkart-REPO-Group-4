@@ -1,4 +1,4 @@
-package com.flipkart.exception;
+package com.dropwizard.exception;
 
 // Exception thrown when a student tries to drop a course which is not added by him.
 public class CourseNotInCart extends Throwable {

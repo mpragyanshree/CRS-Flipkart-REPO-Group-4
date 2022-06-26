@@ -1,5 +1,5 @@
 
-package com.flipkart.exception;
+package com.dropwizard.exception;
 
 
 /**

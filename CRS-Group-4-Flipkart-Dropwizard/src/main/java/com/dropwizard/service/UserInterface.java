@@ -1,7 +1,7 @@
-package com.flipkart.service;
+package com.dropwizard.service;
 // import com.flipkart.exception.UserNotFoundException;
 
-import com.flipkart.exception.UserNotFoundException;
+import com.dropwizard.exception.UserNotFoundException;
 
 public interface UserInterface {
 

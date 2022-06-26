@@ -1,4 +1,4 @@
-package com.flipkart.utils;
+package com.dropwizard.utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

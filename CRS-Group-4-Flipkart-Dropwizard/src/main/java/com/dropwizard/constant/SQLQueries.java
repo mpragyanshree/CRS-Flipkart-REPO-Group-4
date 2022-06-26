@@ -1,4 +1,4 @@
-package com.flipkart.constant;
+package com.dropwizard.constant;
 
 public class SQLQueries {
 
@@ -10,6 +10,8 @@ public class SQLQueries {
     // Get all course details.
     public static final String REGISTRATION_GET_ALL_COURSES = "SELECT * FROM coursecatalog";
 
+    // Get details of given student.
+    public static final String GET_STUDENT_ID = "select * from student where username = ?";
 
     public static final String UPDATE_ADMIN = "update user set name=?,password=?,contactno=?,joiningdate=?,useraddress=? where userid=?";
     public static final String UPDATE_PROFESSOR = "update user set name=?,password=?,joiningdate=?,useraddress=?,contactno=? where userid=?";

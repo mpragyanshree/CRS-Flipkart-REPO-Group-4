@@ -1,4 +1,4 @@
-package com.flipkart.exception;
+package com.dropwizard.exception;
 
 // Exception arises when user tries to register for an already registered course
 public class CourseExistsInCartException extends Throwable {

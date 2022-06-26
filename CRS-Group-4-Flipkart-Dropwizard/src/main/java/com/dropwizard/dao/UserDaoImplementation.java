@@ -1,12 +1,12 @@
-package com.flipkart.dao;
-import com.flipkart.constant.SQLQueries;
-import com.flipkart.utils.DBUtil;
+package com.dropwizard.dao;
+import com.dropwizard.constant.SQLQueries;
+import com.dropwizard.utils.DBUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import com.flipkart.exception.*;
+import com.dropwizard.exception.*;
 
 public class UserDaoImplementation implements UserDaoInterface{
     private static volatile UserDaoImplementation instance=null;

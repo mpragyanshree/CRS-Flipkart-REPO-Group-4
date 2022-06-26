@@ -1,4 +1,4 @@
-package com.flipkart.service;
+package com.dropwizard.service;
 
 import java.sql.Time;
 import java.time.LocalTime;

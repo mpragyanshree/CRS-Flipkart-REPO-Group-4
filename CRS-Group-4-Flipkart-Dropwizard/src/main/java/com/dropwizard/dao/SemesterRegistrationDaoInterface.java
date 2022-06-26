@@ -1,8 +1,8 @@
-package com.flipkart.dao;
-import com.flipkart.bean.Course;
+package com.dropwizard.dao;
+import com.dropwizard.bean.Course;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import com.flipkart.exception.*;
+import com.dropwizard.exception.*;
 
 public interface SemesterRegistrationDaoInterface {
     public boolean registerCourses(String studentId) throws InvalidSemesterRegistration,PaymentDoneException;

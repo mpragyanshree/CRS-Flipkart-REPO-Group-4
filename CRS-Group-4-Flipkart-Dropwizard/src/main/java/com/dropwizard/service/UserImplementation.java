@@ -1,10 +1,10 @@
-package com.flipkart.service;
+package com.dropwizard.service;
 
-import com.flipkart.dao.AdminDaoImplementation;
-import com.flipkart.dao.AdminDaoInterface;
-import com.flipkart.dao.UserDaoImplementation;
-import com.flipkart.dao.UserDaoInterface;
-import com.flipkart.exception.*;
+import com.dropwizard.dao.AdminDaoImplementation;
+import com.dropwizard.dao.AdminDaoInterface;
+import com.dropwizard.dao.UserDaoImplementation;
+import com.dropwizard.dao.UserDaoInterface;
+import com.dropwizard.exception.*;
 
 public class UserImplementation implements UserInterface {
     UserDaoInterface udo  = UserDaoImplementation.getInstance();

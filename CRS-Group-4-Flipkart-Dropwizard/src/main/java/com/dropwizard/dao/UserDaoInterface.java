@@ -1,4 +1,4 @@
-package com.flipkart.dao;
+package com.dropwizard.dao;
 
 public interface UserDaoInterface {
     public void updatePassword(String userId, String newPassword);

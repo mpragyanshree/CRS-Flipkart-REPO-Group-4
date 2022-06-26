@@ -1,6 +1,6 @@
-package com.flipkart.service;
-import com.flipkart.bean.Course;
-import com.flipkart.exception.*;
+package com.dropwizard.service;
+import com.dropwizard.bean.Course;
+import com.dropwizard.exception.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

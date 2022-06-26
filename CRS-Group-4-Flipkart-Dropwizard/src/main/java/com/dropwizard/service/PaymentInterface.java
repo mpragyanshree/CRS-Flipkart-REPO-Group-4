@@ -1,6 +1,6 @@
-package com.flipkart.service;
+package com.dropwizard.service;
 
-import com.flipkart.bean.FeePayment;
+import com.dropwizard.bean.FeePayment;
 
 
 public interface PaymentInterface {

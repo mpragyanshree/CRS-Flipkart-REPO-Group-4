@@ -1,4 +1,4 @@
-package com.flipkart.exception;
+package com.dropwizard.exception;
 
 // Exception arises when student tries to pay fees / finish registration after payment is done.
 public class PaymentDoneException extends Exception {

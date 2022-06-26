@@ -1,4 +1,4 @@
-package com.flipkart.exception;
+package com.dropwizard.exception;
 
 // Exception arises when an invalid semester number is entered.
 public class InvalidSemesterException extends Exception{

@@ -1,4 +1,4 @@
-package com.flipkart.exception;
+package com.dropwizard.exception;
 
 // Exception arises when report card is accessed but not yet generated.
 public class ReportCardNotGeneratedException extends Exception {

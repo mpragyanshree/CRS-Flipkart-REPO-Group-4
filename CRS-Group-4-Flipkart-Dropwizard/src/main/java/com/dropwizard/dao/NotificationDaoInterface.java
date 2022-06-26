@@ -1,5 +1,5 @@
-package com.flipkart.dao;
-import com.flipkart.bean.Notification;
+package com.dropwizard.dao;
+import com.dropwizard.bean.Notification;
 import java.sql.SQLException;
 
 public interface NotificationDaoInterface {

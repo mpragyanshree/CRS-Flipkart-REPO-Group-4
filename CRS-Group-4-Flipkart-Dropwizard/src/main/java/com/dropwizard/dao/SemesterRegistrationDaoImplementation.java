@@ -1,9 +1,9 @@
-package com.flipkart.dao;
+package com.dropwizard.dao;
 
-import com.flipkart.bean.Course;
-import com.flipkart.constant.SQLQueries;
-import com.flipkart.exception.*;
-import com.flipkart.utils.DBUtil;
+import com.dropwizard.bean.Course;
+import com.dropwizard.constant.SQLQueries;
+import com.dropwizard.exception.*;
+import com.dropwizard.utils.DBUtil;
 import jdk.nashorn.internal.runtime.Context;
 
 

@@ -1,10 +1,10 @@
-package com.flipkart.service;
+package com.dropwizard.service;
 
 import java.util.ArrayList;
 import java.util.Date;
-import com.flipkart.bean.Admin;
-import com.flipkart.bean.Course;
-import com.flipkart.bean.Professor;
+import com.dropwizard.bean.Admin;
+import com.dropwizard.bean.Course;
+import com.dropwizard.bean.Professor;
 
 public interface AdminInterface {
 

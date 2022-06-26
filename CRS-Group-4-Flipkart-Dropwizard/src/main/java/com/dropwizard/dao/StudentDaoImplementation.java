@@ -1,11 +1,11 @@
-package com.flipkart.dao;
+package com.dropwizard.dao;
 
-import com.flipkart.bean.Course;
-import com.flipkart.bean.Grade;
-import com.flipkart.bean.Student;
-import com.flipkart.constant.SQLQueries;
-import com.flipkart.exception.*;
-import com.flipkart.utils.DBUtil;
+import com.dropwizard.bean.Course;
+import com.dropwizard.bean.Grade;
+import com.dropwizard.bean.Student;
+import com.dropwizard.constant.SQLQueries;
+import com.dropwizard.exception.*;
+import com.dropwizard.utils.DBUtil;
 import jdk.nashorn.internal.runtime.Context;
 
 import java.sql.Date;
@@ -220,7 +220,31 @@ public class StudentDaoImplementation implements StudentDaoInterface {
         return true;
 
     }
+    public String getStudentIDFromUserName(String username) throws StudentNotRegisteredException {
 
+        String studentID = "";
 
+        Connection connection=DBUtil.getConnection();
 
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.GET_STUDENT_ID);
+            preparedStatement.setString(1, username);
+            ResultSet results=preparedStatement.executeQuery();
+
+            if(results.next()) {
+                studentID = results.getString("studentid");
+
+                return studentID;
+            }
+            else {
+                throw new StudentNotRegisteredException();
+            }
+        }
+        catch(SQLException e) {
+            logger.error(e.getMessage());
+        }
+
+        return studentID;
+    }
 }
