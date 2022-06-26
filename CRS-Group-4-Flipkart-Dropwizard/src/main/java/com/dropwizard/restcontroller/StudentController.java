@@ -29,40 +29,129 @@ public class StudentController {
     StudentDaoImplementation sdo = new StudentDaoImplementation();
     private static final Logger logger = Logger.getLogger(AdminController.class);
 
-    @POST
-    @Path("/createregistrationdashboard")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response addCourse(@NotNull @QueryParam("course_name") String course_name,
-                              @NotNull @QueryParam("course_id") String courseID,
-                              @NotNull @QueryParam("number_of_seats")  int numOfSeats) {
-
-
-
-        String courseInstructor = "";
-
-        try{
-//            Course crs = ao.addCourse(courseID,course_name,courseInstructor,numOfSeats);
-
-            //Student stud = so.registerStudent(studentId, name, password, department, formatter.parse(joiningDate),address,contactnum);
-        } catch (Exception e) {
+    @PUT
+     @Path("/addcourse")
+     @Produces(MediaType.APPLICATION_JSON)
+    public Response addCourse(@NotNull @QueryParam("username") String username,
+                              @NotNull @QueryParam("courseID") String courseID,
+                              @NotNull @QueryParam("isPrimary") Boolean isprimary ){
+        String studentID = getStudentID(username);
+        boolean isPrimary = isprimary == 1;
+        try {
+            boolean courseAdded = false;
+            courseAdded = sro.addCourse(studentID, courseID, isPrimary);
+            if(courseAdded) {
+                System.out.println("Course added successfully!");
+                return Response.status(200).entity("Course added successfully!").build();
+            }
+            else {
+                return Response.status(500).entity("Course was not added to the cart.").build();
+            }
+        }catch (Exception e) {
+            return Response.status(500).entity(e.getMessage()).build();
+        }catch (CourseExistsInCartException e) {
             return Response.status(500).entity(e.getMessage()).build();
         }
-        return Response.status(201).entity("Course Added sucessfully!!! ").build();
     }
+
+    //    DELETE API to drop course
+    @DELETE
+     @Path("/dropCourse")
+     @Produces(MediaType.APPLICATION_JSON)
+    public Response dropCourse(@NotNull @QueryParam("courseID") String courseID,
+                               @NotNull @QueryParam("username")String username){
+
+        try {
+            boolean courseDropped = false;
+            String studentID = getStudentID(username);
+            courseDropped = sro.dropCourse(studentID, courseID);
+            if(courseDropped) {
+                System.out.println("Course dropped successfully!");
+                return Response.status(200).entity("Course dropped successfully!").build();
+            }
+            else {
+                return Response.status(500).entity("Course was not dropped from the cart.").build();
+            }
+
+        } catch (Throwable e) {
+            return Response.status(500).entity(e.getMessage()).build();
+        }
+
+    }
+
+    @GET
+     @Path("/finishStudentRegistration")
+     @Produces(MediaType.APPLICATION_JSON)
+    public Response finishRegistration(@NotNull @QueryParam("username") String username){
+
+        try {
+            boolean finishedRegistration = false;
+
+            System.out.println("=======================================");
+            System.out.println("Finishing registration...");
+            String studentID = getStudentID(username);
+
+            finishedRegistration = sro.registerCourses(studentID);
+
+            if(finishedRegistration) {
+                return Response.status(200).entity("Registration completed successfully!").build();
+            }
+            else {
+                return Response.status(500).entity("Finish Registration action not done!!").build();
+
+            }
+
+        }
+        catch(Exception e) {
+            return Response.status(500).entity(e.getMessage()).build();
+        }
+        catch(Throwable e) {
+            return Response.status(500).entity(e.getMessage()).build();
+        }
+
+    }
+    //    POST API to pay student semester fees
 
     @POST
-    @Path("/addcourse")
-    @Produces(MediaType.APPLICATION_JSON)
-    //-------------
-   // for the time bieng i have returned the above response kindly go through it
-    public Response addCourse(@NotNull @QueryParam("username") String username,
-                              @NotNull @QueryParam("courseID") String courseId,
-                              @NotNull @QueryParam("isPrimary") Boolean isPrimary ){
-        return Response.status(201).entity("Course Added sucessfully!!! ").build();
+     @Path("/payRegistrationFee")
+     @Produces(MediaType.APPLICATION_JSON)
+    public Response payRegistrationFee(@NotNull @QueryParam("username") String username,
+                                       @NotNull @QueryParam("type") String type){
 
+        try {
+            String studentID = getStudentID(username);
+            boolean finishedRegistration = false;
+            finishedRegistration = sro.registerCourses(studentID);
 
+            if(!finishedRegistration) {
+                return Response.status(500).entity("You registration is incomplete!").build();
+            }else if (so.checkPaymentWindow(studentID)) {
+
+                FeePayment payment = new FeePayment();
+                PaymentImplementation po = new PaymentImplementation();
+
+                payment.setStudentId(studentID);
+                if(!type.equals("Card") && !type.equals("NetBanking") && !type.equals("Cash") &&
+                        !type.equals("Cheque") && !type.equals("Scholarship")  ) {
+                    return Response.status(500).entity("Invalid Mode of payment!!").build();
+                }
+
+                payment.setPaymentMode(type);
+                po.makePayment(payment);
+
+                return Response.status(200).entity("Payment done successfully!").build();
+            }else {
+                return Response.status(500).entity("Payment window not opened!").build();
+
+            }
+        }
+        catch (Exception e) {
+            return Response.status(500).entity(e.getMessage()).build();
+        }
+        catch(Throwable e) {
+            return Response.status(500).entity(e.getMessage()).build();
+        }
     }
-    //------------------
 
     //View all registered courses for a given student in a given course
     @GET
@@ -130,172 +219,3 @@ public class StudentController {
         }
     }
 }
-//                        createRegistrationDashboard();
-//
-//                    case 2 :
-//                        // Select a course for semester registration.
-//                        addCourse();
-//                        break;
-//
-//                    case 3:
-//                        // Drop out one selected course.
-//                        dropCourse();
-//                        break;
-//
-//                    case 4:
-//                        // Finish the selection of courses.
-//                        finishRegistration();
-//                        break;
-//
-//                    case 5:
-//                        // Pay the semester fees after successful registration.
-//                        payRegistrationFee();
-//                        break;
-//
-//                    case 6:
-//                        return;
-//
-//                    default:
-//                        System.out.println("Invalid input");
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    // Function that marks selection of courses is done, and checks if the choice made is valid.
-//    private void finishRegistration() {
-//
-//        System.out.println("=======================================");
-//        System.out.println("Finishing registration...");
-//
-//        finishedRegistration = sro.registerCourses(studentID);
-//
-//        if(finishedRegistration) {
-//            System.out.println("Registration completed successfully!");
-//        }
-//        else {
-//            System.out.println("You have not selected 4 primary and 2 alternative courses. Please select again !!");
-//        }
-//    }
-//
-//
-//    // Function to redirect on payment portal depending on the payment choice made.
-//    private void payRegistrationFee() {
-//
-//        if (sro.checkPaymentWindow(studentID)){ //check payment window is up or not and student registered or not, then proceed for payment
-//            Scanner sc = new Scanner(System.in);
-//            FeePayment payment = new FeePayment();
-//            PaymentImplementation po = new PaymentImplementation();
-//
-//            payment.setStudentId(studentID);
-//
-//            try {
-//
-//                if(!finishedRegistration) {
-//                    throw new Exception("Your registration is incomplete!");
-//                }
-//
-//                System.out.println("=======================================");
-//                System.out.println("Choose a Payment type : ");
-//                System.out.println("---------------------------------------");
-//                System.out.println("1 : Card");
-//                System.out.println("2 : NetBanking/UPI");
-//                System.out.println("3 : Cash");
-//                System.out.println("4 : Cheque");
-//                System.out.println("=======================================");
-//
-//                int menuOption = sc.nextInt();
-//                sc.nextLine();
-//
-//                switch (menuOption) {
-//                    case 1:
-//                        System.out.println("=======================================");
-//                        System.out.println("Enter your card details");
-//                        System.out.println("---------------------------------------");
-//                        System.out.println("Enter card number : ");
-//                        String cardNumber = sc.nextLine();
-//                        payment.setPaymentMode("Card");
-//                        break;
-//                    case 2:
-//                        System.out.println("=======================================");
-//                        System.out.println("Enter your bank details");
-//                        System.out.println("---------------------------------------");
-//                        System.out.println("Enter account number : ");
-//                        String accountNumber = sc.nextLine();
-//                        payment.setPaymentMode("NetBanking");
-//                        break;
-//                    case 3:
-//                        payment.setPaymentMode("Cash");
-//                        break;
-//                    case 4:
-//                        payment.setPaymentMode("Cheque");
-//                        break;
-//
-//                    default:
-//                        System.out.println("---------------------------------------");
-//                        System.out.println("Invalid input");
-//                        return;
-//                }
-//
-//                po.makePayment(payment);
-//
-//            } catch (Exception e) {
-//                System.out.println(e.getMessage());
-//            }
-//        }
-//
-//    }
-//// Function to drop course
-//    private void dropCourse() {
-//
-//        System.out.println("=======================================");
-//        System.out.println("Delete Course");
-//        System.out.println("Enter course ID: ");
-//
-//        String courseID = sc.nextLine();
-//
-//        boolean courseDropped = false;
-//        try {
-//            courseDropped = sro.dropCourse(studentID, 1, courseID);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        if(courseDropped) {
-//            System.out.println("Course dropped successfully!");
-//        }
-//        else {
-//            System.out.println("Course was not dropped from the cart.");
-//        }
-//    }
-////Function to add course
-//    private void addCourse() {
-//
-//        System.out.println("=======================================");
-//        System.out.println("Add Course");
-//        System.out.println("Enter course ID: ");
-//        String courseID = sc.nextLine();
-//        System.out.println("Is primary(0/1) ? : ");
-//        int isPrimaryInt = sc.nextInt();
-//        sc.nextLine();
-//        boolean isPrimary = isPrimaryInt == 1;
-//
-//        boolean courseAdded = false;
-//        try {
-//            courseAdded = sro.addCourse(studentID,courseID, isPrimary);
-//        } catch (Exception e) {
-//
-//            e.printStackTrace();
-//        }
-//
-//        if(courseAdded) {
-//            System.out.println("Course added successfully!");//STILL WE NEED TO GET THE APPROVAL OF THE ADMIN FOR THE AVAILABLE COURSE
-//        }
-//        else {
-//            System.out.println("Course was not added to the cart.");
-//        }
-//    }
