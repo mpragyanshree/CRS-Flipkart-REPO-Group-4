@@ -5,10 +5,7 @@ import com.dropwizard.bean.RegisteredStudents;
 import com.dropwizard.bean.Course;
 import com.dropwizard.dao.ProfessorDaoImplementation;
 import com.dropwizard.dao.ProfessorDaoInterface;
-import com.dropwizard.exception.CourseExistsInCartException;
-import com.dropwizard.exception.GradeNotAddedException;
-import com.dropwizard.exception.NoStudentInCourseException;
-import com.dropwizard.exception.StudentNotRegisteredException;
+import com.dropwizard.exception.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -103,7 +100,7 @@ public class ProfessorImplementation implements ProfessorInterface {
 
      * @return  void
      */
-    public List<Course> viewRegisteredCourses()
+    public List<Course> viewRegisteredCourses(String professorID)
     {
         List<Course>ans = new ArrayList<Course>();
 
@@ -111,7 +108,7 @@ public class ProfessorImplementation implements ProfessorInterface {
 
             try
             {
-                ans = professorDAOInterface.viewAvailableCourses();
+                ans = professorDAOInterface.viewAvailableCourses(professorID);
                 for (Course r:ans) {
                     System.out.println("courseID = " + r.getCourseCode()+ " courseName = "+r.getCourseName()+ " ProfessorID : "+r.getInstructorId()+" numberofSeats : "+r.getNumberOfSeats());
                 }
@@ -153,6 +150,27 @@ public class ProfessorImplementation implements ProfessorInterface {
             System.out.println(ex.getMessage());
         }
     return false;
+
+    }
+
+    public boolean unregisterCourse(String professorID, String courseId)
+    {
+
+        try {
+            Boolean ans = professorDAOInterface.unregisterCourse(professorID,courseId);
+            if(ans){
+                System.out.println("Course has been unregistered");
+                return true;
+            }
+        }
+        catch(Exception e) {
+            System.out.println("cannot unregister for this course");
+        }
+        catch (NotRegisteredforCourse ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+        return false;
 
     }
 

@@ -39,10 +39,11 @@ public class SemesterRegistrationImplementation implements SemesterRegistrationI
 
        } catch (InvalidSemesterRegistration e) {
             logger.error(e.getMessage());
+            return false;
         } catch (PaymentDoneException e) {
             logger.error(e.getMessage());
+            return false;
         }
-        return false;
     }
     // function to add course
     /**

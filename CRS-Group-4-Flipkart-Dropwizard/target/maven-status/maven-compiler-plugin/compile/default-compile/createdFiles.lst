@@ -28,6 +28,7 @@ com/dropwizard/service/NotificationImplementation.class
 com/dropwizard/dao/PaymentDaoInterface.class
 com/dropwizard/dao/SemesterRegistrationDaoInterface.class
 com/dropwizard/exception/CourseNotInCart.class
+com/dropwizard/exception/NotRegisteredforCourse.class
 com/dropwizard/exception/StudentNotApprovedException.class
 com/dropwizard/dao/ProfessorDaoImplementation.class
 com/dropwizard/service/PaymentInterface.class

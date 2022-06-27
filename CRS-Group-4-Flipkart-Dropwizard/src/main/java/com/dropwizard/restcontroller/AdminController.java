@@ -9,6 +9,7 @@ import com.dropwizard.service.AdminImplementation;
 import com.sun.istack.NotNull;
 import jdk.nashorn.internal.runtime.Context;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.ws.rs.*;
@@ -42,10 +43,7 @@ public class AdminController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addCourse(@NotNull @QueryParam("course_name") String course_name,
                               @NotNull @QueryParam("course_id") String courseID,
-                              @NotNull @QueryParam("number_of_seats")  int numOfSeats) {
-
-
-
+                              @NotNull @QueryParam("number_of_seats")  int numOfSeats){
         String courseInstructor = "";
 
         try{
@@ -113,7 +111,6 @@ public class AdminController {
                                  @NotNull @QueryParam("designation")String designation,
                                  @NotNull @QueryParam("contact") String contact,
                                  @NotNull @QueryParam("joiningdate") String joiningDate){
-
         try {
 
             Professor prof = ao.addProfessor(username, name, password, department, designation, joiningDate,address,contact);

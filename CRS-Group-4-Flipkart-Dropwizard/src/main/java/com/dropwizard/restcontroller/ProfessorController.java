@@ -9,11 +9,7 @@ import java.util.Scanner;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -56,16 +52,37 @@ public class ProfessorController {
 
 
     }
+    @POST
+    @Path("/unregisterCourse")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response unregisterCourse(@NotNull
+                                   @QueryParam("username") String username,
+                                   @NotNull
+                                   @QueryParam("courseId") String courseId
+    ) {
+
+        try {
+
+            profObj.unregisterCourse(username, courseId);
+        }
+        catch(Exception e) {
+            return Response.status(500).entity(e.getMessage()).build();
+        }
+        return Response.status(200).entity( "Successfully Unregistered").build();
+
+
+    }
 
     // View all available courses for a given professor
     @GET
     @Path("/getAvailableCourses")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response viewAvailableCourses() {
+    public Response viewAvailableCourses(@NotNull
+                                             @QueryParam("username") String username) {
 
 
         try {
-            return Response.ok(profObj.viewRegisteredCourses(),MediaType.APPLICATION_JSON).build();
+            return Response.ok(profObj.viewRegisteredCourses(username),MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
             logger.error(e.getMessage());
             return Response.status(500).entity(e.getMessage()).build();

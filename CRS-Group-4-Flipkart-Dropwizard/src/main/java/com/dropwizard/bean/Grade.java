@@ -6,7 +6,7 @@ package com.dropwizard.bean;
 public class Grade {
 
     private String courseId;
-    private String courseName;
+    //private String courseName;
     private String grade;
     private String StudentID;
 
@@ -18,7 +18,7 @@ public class Grade {
      */
     public Grade(String courseId, String courseName, String grade) {
         this.courseId = courseId;
-        this.courseName = courseName;
+       // this.courseName = courseName;
         this.grade = grade;
     }
 
@@ -46,17 +46,17 @@ public class Grade {
      * Method to get course name
      * @return
      */
-    public String getCourseName() {
+    /*public String getCourseName() {
         return courseName;
-    }
+    }*/
 
     /**
      * Method to set course name
      * @param courseName
      */
-    public void setCourseName(String courseName) {
+   /* public void setCourseName(String courseName) {
         this.courseName = courseName;
-    }
+    }*/
 
     /**
      * Method to get Grades

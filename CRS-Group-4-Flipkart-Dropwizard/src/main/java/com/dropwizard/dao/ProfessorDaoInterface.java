@@ -8,6 +8,7 @@ import com.dropwizard.exception.CourseExistsInCartException;
 import com.dropwizard.exception.GradeNotAddedException;
 import com.dropwizard.exception.NoStudentInCourseException;
 import com.dropwizard.exception.StudentNotRegisteredException;
+import com.dropwizard.exception.NotRegisteredforCourse;
 
 public interface ProfessorDaoInterface {
 
@@ -15,9 +16,12 @@ public interface ProfessorDaoInterface {
 
     public Boolean addGrade(String studentId,String courseID,String grade) throws GradeNotAddedException,StudentNotRegisteredException, SQLException;
 
-    public List<Course> viewAvailableCourses();
+    public List<Course> viewAvailableCourses(String professorID);
 
     public boolean registerCourse(String professorID, String courseID) throws CourseExistsInCartException;
+
+    public boolean unregisterCourse(String professorID, String courseID) throws NotRegisteredforCourse;
+
 }
 
 

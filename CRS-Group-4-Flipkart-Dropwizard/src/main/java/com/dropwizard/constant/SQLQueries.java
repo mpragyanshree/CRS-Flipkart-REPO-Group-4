@@ -17,8 +17,8 @@ public class SQLQueries {
     public static final String UPDATE_PROFESSOR = "update user set name=?,password=?,joiningdate=?,useraddress=?,contactno=? where userid=?";
     public static final String UPDATE_PROFESSOR1 = "update professor set department=?,designation=? where professorid=?";
     public static final String REMOVE_ADMIN = "delete from user where userid = ?";
-    public static final String REMOVE_COURSE = "delete from course where coursecode = ?";
-    public static final String UPDATE_COURSE = "update course set coursecode=?,coursename=?,instructorid=?,numberofseats=? where courseid=?";
+    public static final String REMOVE_COURSE = "delete from coursecatalog where coursecode = ?";
+    public static final String UPDATE_COURSE = "update coursecatalog set coursename=?, coursecode=?,numberofseats=?,instructorid=? where coursecode=?";
     public static final String UPDATE_REG_STATUS = "update student set registrationstatus=? where studentid=?";
     // view pending students for approval
     public static final String VIEW_PENDING_STUDENT_APPROVAL = "select studentid from student where isapproved = 0 and registrationstatus = 1";//check
@@ -86,10 +86,13 @@ public class SQLQueries {
     */
     public static final String ADD_GRADE="update registeredcourses set grade=? where coursecode=? and studentid=?";
     public static final String GET_REGISTERED_STUDENTS="select * from registeredcourses natural join student where coursecode=? AND professorid=?";
-    public static final String AVAILABLE_COURSES_PROFESSOR="select * from coursecatalog where instructorid is NULL";
+    public static final String AVAILABLE_COURSES_PROFESSOR="select * from coursecatalog where instructorid is NULL or instructorid=?";
     public static final String REGISTER_COURSE_PROFESSOR="update coursecatalog set instructorid =? where coursecode =?";
     public static final String IS_AVAILABLE_COURSE_PROFESSOR="select * from coursecatalog where coursecode = ? and instructorid is NULL";
     public static final String CHECK_REGISTRATION="select * from student natural join registeredcourses  where studentid=? and coursecode=?";
+    public static final String IS_REGISTERED_BY_PROFESSOR = "select * FROM coursecatalog where  coursecode=? and instructorid =? ";
+    public static final String UNREGISTER_COURSE_PROFESSOR = "update coursecatalog set instructorid = NULL where coursecode=?";
+
     //public static final String NUMBER_OF_REGISTERED_COURSES=" select studentId from registeredcourse where studentId = ? ";
     //public static final String IS_REGISTERED=" select courseCode from registeredcourse where courseCode=? and studentId=? ";
     public static final String GET_GRADECARD = "select coursecode, grade FROM registeredcourses where studentid=?";

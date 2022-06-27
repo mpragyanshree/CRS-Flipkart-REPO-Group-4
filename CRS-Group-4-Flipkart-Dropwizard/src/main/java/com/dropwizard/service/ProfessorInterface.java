@@ -29,7 +29,7 @@ public interface ProfessorInterface {
      * Method to view Registered courses
      * @return  list of registered courses
      */
-    public List<Course> viewRegisteredCourses();
+    public List<Course> viewRegisteredCourses(String professorID);
 
     /**
      * Method to register course
@@ -38,5 +38,9 @@ public interface ProfessorInterface {
      * @return  boolean
      */
     public boolean registerCourse(String professorID, String courseID);
+
+    public boolean unregisterCourse(String professorID, String courseID);
+
+
 
 }

@@ -80,7 +80,7 @@ public class StudentController {
         return Response.status(200).entity("Course dropped successfully!").build();
     }
 
-    @GET
+    @PUT
      @Path("/finishStudentRegistration")
      @Produces(MediaType.APPLICATION_JSON)
     public Response finishRegistration(@NotNull @QueryParam("studentID") String studentID){
@@ -194,7 +194,7 @@ public class StudentController {
      @Path("/viewGradeCard")
      @Produces(MediaType.APPLICATION_JSON)
     public Response viewGradeCard(@NotNull
-                                  @QueryParam("studentid") String studentID,
+                                  @QueryParam("studentID") String studentID,
                                   @NotNull
                                   @QueryParam("semesterID")int semesterID) {
         try {

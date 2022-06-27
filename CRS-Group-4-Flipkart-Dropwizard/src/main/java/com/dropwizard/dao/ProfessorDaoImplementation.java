@@ -123,11 +123,12 @@ public  class ProfessorDaoImplementation implements ProfessorDaoInterface {
 
 
     @Override
-    public List<Course> viewAvailableCourses() {
+    public List<Course> viewAvailableCourses(String professorID) {
         Connection connection = DBUtil.getConnection();
         List<Course> viewAvailableCouse = new ArrayList<Course>();
         try {
             PreparedStatement statement = connection.prepareStatement(SQLQueries.AVAILABLE_COURSES_PROFESSOR);
+            statement.setString(1, professorID);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
@@ -158,7 +159,7 @@ public  class ProfessorDaoImplementation implements ProfessorDaoInterface {
         try {
 
 
-         //   System.out.println("wowow");
+
             PreparedStatement statement = connection.prepareStatement(SQLQueries.IS_AVAILABLE_COURSE_PROFESSOR);
             statement.setString(1, courseId);
             ResultSet rs = statement.executeQuery();
@@ -181,4 +182,38 @@ public  class ProfessorDaoImplementation implements ProfessorDaoInterface {
         }
         return false;
     }
+
+    @Override
+    public boolean unregisterCourse(String professorID, String courseId) throws NotRegisteredforCourse {
+        Connection connection = DBUtil.getConnection();
+
+        try {
+
+
+
+            PreparedStatement statement = connection.prepareStatement(SQLQueries.IS_REGISTERED_BY_PROFESSOR);
+            statement.setString(1, courseId);
+            statement.setString(2, professorID);
+            ResultSet rs = statement.executeQuery();
+
+            //    System.out.println(rs.getString("coursecode"));
+
+            if(rs.next()) {
+                PreparedStatement statement2 = connection.prepareStatement(SQLQueries.UNREGISTER_COURSE_PROFESSOR);
+
+
+                statement2.setString(1, courseId);
+
+                statement2.executeUpdate();
+                return true;
+            } else {
+                throw new NotRegisteredforCourse(courseId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 }

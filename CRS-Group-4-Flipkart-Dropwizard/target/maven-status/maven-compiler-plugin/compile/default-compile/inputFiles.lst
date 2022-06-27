@@ -69,6 +69,7 @@
 /Users/pragyanshree.m/IdeaProjects/CRS-Group-4-Flipkart-Dropwizard/src/main/java/com/dropwizard/bean/Notification.java
 /Users/pragyanshree.m/IdeaProjects/CRS-Group-4-Flipkart-Dropwizard/src/main/java/com/dropwizard/service/StudentInterface.java
 /Users/pragyanshree.m/IdeaProjects/CRS-Group-4-Flipkart-Dropwizard/src/main/java/com/dropwizard/exception/InvalidCourseException.java
+/Users/pragyanshree.m/IdeaProjects/CRS-Group-4-Flipkart-Dropwizard/src/main/java/com/dropwizard/exception/NotRegisteredforCourse.java
 /Users/pragyanshree.m/IdeaProjects/CRS-Group-4-Flipkart-Dropwizard/src/main/java/com/dropwizard/service/PaymentInterface.java
 /Users/pragyanshree.m/IdeaProjects/CRS-Group-4-Flipkart-Dropwizard/src/main/java/com/dropwizard/restcontroller/StudentController.java
 /Users/pragyanshree.m/IdeaProjects/CRS-Group-4-Flipkart-Dropwizard/src/main/java/com/dropwizard/utils/DBUtil.java

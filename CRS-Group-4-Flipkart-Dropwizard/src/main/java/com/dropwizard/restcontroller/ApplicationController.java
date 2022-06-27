@@ -4,19 +4,16 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import com.dropwizard.bean.User;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.dropwizard.bean.Student;
+import com.dropwizard.bean.RegisteredStudents;
 import com.dropwizard.service.StudentImplementation;
 import com.dropwizard.service.UserImplementation;
 
@@ -100,17 +97,14 @@ public class ApplicationController {
 
     @PUT
     @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response loginUser(@NotNull
-                                  @QueryParam("username") String username,
-                              @NotNull
-                                  @QueryParam("password") String password,
-                              @NotNull
-                                  @QueryParam("role") String role)
-    {
-
+    public Response loginUser(@Valid User user) {
+        String username = user.getUserId();
+        String password = user.getPassword();
+        String role = user.getRole();
         try {
-            System.out.println(username);
+            System.out.println(password);
             UserImplementation uo = new UserImplementation();
 
             if (uo.loginUser(username, password, role)) {
@@ -196,42 +190,25 @@ public class ApplicationController {
 
     @POST
     @Path("/register")
-    @Consumes("application/json")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response selfRegisterStudent(@QueryParam("username") String studentId,
-                                     @NotNull
-                                     @QueryParam("Password") String password,
-                                     @NotNull
-                                         @QueryParam("Name") String name,
-                                     @NotNull
-                                         @QueryParam("JoiningDate") String joiningDate,
-                                     @NotNull
-                                         @QueryParam("Address") String address,
-                                     @NotNull
-                                         @QueryParam("ContactNumber") String contactnum,
-                                     @NotNull
-                                         @QueryParam("Department") String department)
+    public Response selfRegisterStudent(@NotNull @QueryParam("username") String studentId,
+                                     @NotNull @QueryParam("Password") String password,
+                                     @NotNull @QueryParam("Name") String name,
+                                     @NotNull @QueryParam("JoiningDate") String joiningDate,
+                                     @NotNull @QueryParam("Address") String address,
+                                     @NotNull @QueryParam("ContactNumber") String contactnum,
+                                     @NotNull @QueryParam("Department") String department)
     {
+//        String studentId = student.getStudentId();
+//        String password = student.getPassword();
+//        String name = student.getName();
+//        String joiningDate = student.getJoiningDate();
+//        String address = student.getAddress();
+//        String contactnum = student.getContactnum();
+//        String department = student.getDepartment();
 
         try {
-           /* System.out.println("=======================================");
-            System.out.println("Enter your details");
-            System.out.println("---------------------------------------");
-            System.out.print("Student ID: ");
-            studentId = sc.nextLine();
-            System.out.print("Password: ");
-            password = sc.nextLine();
-            System.out.print("Name: ");
-            name = sc.nextLine();
-            System.out.print("Department: ");
-            department = sc.nextLine();
-            System.out.print("Jining Date, Please enter in format dd-MM-YYYY: ");
-            joiningDate = sc.nextLine();
-            System.out.print("Address: ");
-            address = sc.nextLine();
-            System.out.print("Contact Number: ");
-            contactnum = sc.nextLine();
-            System.out.println("=======================================");*/
             Student stud = so.registerStudent(studentId,name, password, department, joiningDate,address,contactnum);
             if(stud == null) {
                 System.out.println("Student Was not added");
@@ -249,5 +226,4 @@ public class ApplicationController {
         String result = "Added student : " + name +  " | Student ID : "+ studentId + ". Wait for admin approval!";
         return Response.status(201).entity(result).build();
     }
-
 }
