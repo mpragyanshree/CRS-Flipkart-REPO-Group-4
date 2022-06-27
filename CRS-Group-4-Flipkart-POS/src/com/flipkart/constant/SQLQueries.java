@@ -15,8 +15,8 @@ public class SQLQueries {
     public static final String UPDATE_PROFESSOR = "update user set name=?,password=?,joiningdate=?,useraddress=?,contactno=? where userid=?";
     public static final String UPDATE_PROFESSOR1 = "update professor set department=?,designation=? where professorid=?";
     public static final String REMOVE_ADMIN = "delete from user where userid = ?";
-    public static final String REMOVE_COURSE = "delete from course where coursecode = ?";
-    public static final String UPDATE_COURSE = "update course set coursecode=?,coursename=?,instructorid=?,numberofseats=? where courseid=?";
+    public static final String REMOVE_COURSE = "delete from coursecatalog where coursecode = ?";
+    public static final String UPDATE_COURSE = "update coursecatalog set coursename=?, coursecode=?,numberofseats=?,instructorid=? where coursecode=?";
     public static final String UPDATE_REG_STATUS = "update student set registrationstatus=? where studentid=?";
     // view pending students for approval
     public static final String VIEW_PENDING_STUDENT_APPROVAL = "select studentid from student where isapproved = 0 and registrationstatus = 1";//check

@@ -96,6 +96,7 @@ public class AdminDaoImplementation implements AdminDaoInterface {
             st.setString(2, courseID);
             st.setInt(3, numOfSeats);
             st.setString(4, courseInstructor);
+            st.setString(5, courseID);
             st.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("Exception while updating course");
