@@ -106,7 +106,7 @@ public class ProfessorController {
     @GET
     @Path("/getRegisteredStudents")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response viewEnrolledStudents(@NotNull
+    public Response viewRegisteredStudents(@NotNull
                                          @QueryParam("username") String username,
                                          @NotNull
                                          @QueryParam("courseId") String courseId){

@@ -1,5 +1,20 @@
 package com.dropwizard.restcontroller;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.dropwizard.bean.Student;
 import com.dropwizard.service.StudentImplementation;
@@ -16,16 +31,13 @@ import com.dropwizard.service.UserImplementation;
 
 
 
-
+@Path("/application")
 
 public class ApplicationController {
-    private Scanner sc = new Scanner(System.in);
+    //private Scanner sc = new Scanner(System.in);
     StudentImplementation so=new StudentImplementation();
 
-    public static void main(String[] args) {
-        com.dropwizard.restcontroller.ApplicationController newUser = new com.dropwizard.restcontroller.ApplicationController();
-        newUser.createMenu();
-    }
+
 
 
 
@@ -34,7 +46,7 @@ public class ApplicationController {
      */
 
 
-    public void createMenu() {
+   /* public void createMenu() {
         try {
             while(true) {
                 System.out.println("\n\n==~~=~~= Course Registration System ~=~~=~~=~~==");
@@ -80,66 +92,65 @@ public class ApplicationController {
         }
     }
 
-
+*/
 
     /**
      * Method for Login functionality
      */
 
-
-    public void loginUser()
+    @PUT
+    @Path("/login")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response loginUser(@NotNull
+                                  @QueryParam("username") String username,
+                              @NotNull
+                                  @QueryParam("password") String password,
+                              @NotNull
+                                  @QueryParam("role") String role)
     {
-        String username, password, role;
 
         try {
-
-            System.out.println("=======================================");
-            System.out.print("UserID: ");
-            username = sc.nextLine();
-            System.out.print("Password: ");
-            password = sc.nextLine();
-            System.out.print("Enter Role (student/professor/admin): ");
-            role = sc.nextLine();
-
+            System.out.println(username);
             UserImplementation uo = new UserImplementation();
 
             if (uo.loginUser(username, password, role)) {
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                LocalDateTime now = LocalDateTime.now();
                 switch (role) {
                     case "student":
                         System.out.println("=======================================");
                         System.out.println("Logged In Successfully as a Student");
                         System.out.println("Welcome " + username + " !!");
-//                        System.out.println("Login Time: "+ dtf.format(now) );
-                        CRSStudent sc = new CRSStudent();
-                        sc.createStudentMenu(username);
+                        System.out.println("Login Time: "+ dtf.format(now) );
                         break;
 
                     case "professor":
                         System.out.println("=======================================");
                         System.out.println("Logged In Successfully as a Professor");
                         System.out.println("Welcome " + username + " !!");
-//                        System.out.println("Login Time: "+ dtf.format(now) );
-                        CRSProfessor pc = new CRSProfessor();
-                        pc.createProfessorMenu(username);
+                        System.out.println("Login Time: "+ dtf.format(now) );
                         break;
 
                     case "admin":
                         System.out.println("=======================================");
                         System.out.println("Logged In Successfully as a Admin");
                         System.out.println("Welcome " + username + " !!");
-//                        System.out.println("Login Time: "+ dtf.format(now) );
-                        CRSAdmin ac = new CRSAdmin();
-                        ac.createAdminMenu(username);
+                        System.out.println("Login Time: "+ dtf.format(now) );
                         break;
 
                     default:
                         System.out.println("Invalid Role");
                         System.out.println("=======================================");
                 }
+                return Response.status(200).entity("Login successful at "+ dtf.format(now)).build();
+            }
+            else {
+                return Response.status(500).entity("Invalid credentials!").build();
             }
         }
         catch (Exception e) {
             e.printStackTrace();
+            return Response.status(500).entity(e.getMessage()).build();
         }
     }
 
@@ -148,29 +159,33 @@ public class ApplicationController {
      * Method to update password of User
      */
 
-
-    public void updatePassword()
+    @POST
+    @Path("/updatePassword")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updatePassword(@QueryParam("username") String username,
+                               @NotNull
+                               @QueryParam("oldPassword") String oldPassword,
+                               @NotNull
+                                   @QueryParam("role") String role,
+                               @NotNull
+                                   @QueryParam("newPassword") String newPassword)
     {
-        String oldPassword,newPassword,username;
         try {
-            System.out.println("=======================================");
+          /*  System.out.println("=======================================");
             System.out.print("Enter UserID: ");
             username = sc.nextLine();
             System.out.print("Enter existing Password: ");
-            oldPassword = sc.nextLine();
-
+            oldPassword = sc.nextLine();*/
             UserImplementation uo = new UserImplementation();
-           // if(uo.loginUser(username, oldPassword, role))
-
-            System.out.println("=======================================");
-            System.out.print("Enter new Password: ");
-            newPassword = sc.nextLine();
-            uo.updatePassword(username, newPassword); //function calling
+            if(uo.loginUser(username, oldPassword, role)) {
+                uo.updatePassword(username, newPassword); //function calling
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
+            return Response.status(500).entity(e.getMessage()).build();
         }
-        System.out.println("Updated Password !! \n");
+        return Response.status(201).entity("Password Update Successful!!!").build();
     }
 
 
@@ -179,14 +194,27 @@ public class ApplicationController {
      * Method to help Student register themselves, pending admin approval
      */
 
-
-    public void  selfRegisterStudent()
+    @POST
+    @Path("/register")
+    @Consumes("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response selfRegisterStudent(@QueryParam("username") String studentId,
+                                     @NotNull
+                                     @QueryParam("Password") String password,
+                                     @NotNull
+                                         @QueryParam("Name") String name,
+                                     @NotNull
+                                         @QueryParam("JoiningDate") String joiningDate,
+                                     @NotNull
+                                         @QueryParam("Address") String address,
+                                     @NotNull
+                                         @QueryParam("ContactNumber") String contactnum,
+                                     @NotNull
+                                         @QueryParam("Department") String department)
     {
-        String studentId, password, name, department;
-        String joiningDate,address,contactnum;
 
         try {
-            System.out.println("=======================================");
+           /* System.out.println("=======================================");
             System.out.println("Enter your details");
             System.out.println("---------------------------------------");
             System.out.print("Student ID: ");
@@ -203,7 +231,7 @@ public class ApplicationController {
             address = sc.nextLine();
             System.out.print("Contact Number: ");
             contactnum = sc.nextLine();
-            System.out.println("=======================================");
+            System.out.println("=======================================");*/
             Student stud = so.registerStudent(studentId,name, password, department, joiningDate,address,contactnum);
             if(stud == null) {
                 System.out.println("Student Was not added");
@@ -216,7 +244,10 @@ public class ApplicationController {
 
         } catch (Exception e) {
             e.printStackTrace();
+            return Response.status(500).entity(e.getMessage()).build();
         }
+        String result = "Added student : " + name +  " | Student ID : "+ studentId + ". Wait for admin approval!";
+        return Response.status(201).entity(result).build();
     }
 
 }

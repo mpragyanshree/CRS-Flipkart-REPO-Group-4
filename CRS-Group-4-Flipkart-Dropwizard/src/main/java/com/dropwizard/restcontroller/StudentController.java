@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import com.dropwizard.bean.*;
 import com.dropwizard.dao.StudentDaoImplementation;
 import com.dropwizard.service.AdminImplementation;
+import com.dropwizard.service.PaymentImplementation;
 import com.dropwizard.service.SemesterRegistrationImplementation;
 import com.dropwizard.service.StudentImplementation;
 import com.sun.istack.NotNull;
@@ -23,7 +24,7 @@ import org.apache.log4j.Logger;
 
 @Path("/student")
 public class StudentController {
-    private Scanner sc = new Scanner(System.in);
+    //private Scanner sc = new Scanner(System.in);
     SemesterRegistrationImplementation sro = new SemesterRegistrationImplementation();
     StudentImplementation so = new StudentImplementation();
     StudentDaoImplementation sdo = new StudentDaoImplementation();
@@ -32,26 +33,25 @@ public class StudentController {
     @PUT
      @Path("/addcourse")
      @Produces(MediaType.APPLICATION_JSON)
-    public Response addCourse(@NotNull @QueryParam("username") String username,
+    public Response addCourse(@NotNull @QueryParam("studentId") String studentID,
                               @NotNull @QueryParam("courseID") String courseID,
-                              @NotNull @QueryParam("isPrimary") Boolean isprimary ){
-        String studentID = getStudentID(username);
+                              @NotNull @QueryParam("isPrimary") int isprimary ){
+        //String studentID = getStudentID(username);
         boolean isPrimary = isprimary == 1;
         try {
             boolean courseAdded = false;
             courseAdded = sro.addCourse(studentID, courseID, isPrimary);
             if(courseAdded) {
                 System.out.println("Course added successfully!");
-                return Response.status(200).entity("Course added successfully!").build();
+               // return Response.status(200).entity("Course added successfully!").build();
             }
             else {
                 return Response.status(500).entity("Course was not added to the cart.").build();
             }
         }catch (Exception e) {
             return Response.status(500).entity(e.getMessage()).build();
-        }catch (CourseExistsInCartException e) {
-            return Response.status(500).entity(e.getMessage()).build();
         }
+        return Response.status(200).entity("Course added successfully!").build();
     }
 
     //    DELETE API to drop course
@@ -59,15 +59,16 @@ public class StudentController {
      @Path("/dropCourse")
      @Produces(MediaType.APPLICATION_JSON)
     public Response dropCourse(@NotNull @QueryParam("courseID") String courseID,
-                               @NotNull @QueryParam("username")String username){
+                               @NotNull @QueryParam("studentID")String studentID){
 
         try {
             boolean courseDropped = false;
-            String studentID = getStudentID(username);
-            courseDropped = sro.dropCourse(studentID, courseID);
+            int semester=1;
+            //String studentID = getStudentID(username);
+            courseDropped = sro.dropCourse(studentID, semester, courseID);
             if(courseDropped) {
                 System.out.println("Course dropped successfully!");
-                return Response.status(200).entity("Course dropped successfully!").build();
+               // return Response.status(200).entity("Course dropped successfully!").build();
             }
             else {
                 return Response.status(500).entity("Course was not dropped from the cart.").build();
@@ -76,20 +77,20 @@ public class StudentController {
         } catch (Throwable e) {
             return Response.status(500).entity(e.getMessage()).build();
         }
-
+        return Response.status(200).entity("Course dropped successfully!").build();
     }
 
     @GET
      @Path("/finishStudentRegistration")
      @Produces(MediaType.APPLICATION_JSON)
-    public Response finishRegistration(@NotNull @QueryParam("username") String username){
+    public Response finishRegistration(@NotNull @QueryParam("studentID") String studentID){
 
         try {
             boolean finishedRegistration = false;
 
             System.out.println("=======================================");
             System.out.println("Finishing registration...");
-            String studentID = getStudentID(username);
+            //String studentID = getStudentID(username);
 
             finishedRegistration = sro.registerCourses(studentID);
 
@@ -115,17 +116,17 @@ public class StudentController {
     @POST
      @Path("/payRegistrationFee")
      @Produces(MediaType.APPLICATION_JSON)
-    public Response payRegistrationFee(@NotNull @QueryParam("username") String username,
+    public Response payRegistrationFee(@NotNull @QueryParam("studentID") String studentID,
                                        @NotNull @QueryParam("type") String type){
 
         try {
-            String studentID = getStudentID(username);
+            //String studentID = getStudentID(username);
             boolean finishedRegistration = false;
             finishedRegistration = sro.registerCourses(studentID);
 
             if(!finishedRegistration) {
                 return Response.status(500).entity("You registration is incomplete!").build();
-            }else if (so.checkPaymentWindow(studentID)) {
+            }else if (sro.checkPaymentWindow(studentID)) {
 
                 FeePayment payment = new FeePayment();
                 PaymentImplementation po = new PaymentImplementation();
@@ -158,13 +159,13 @@ public class StudentController {
      @Path("/viewRegisteredCourses")
      @Produces(MediaType.APPLICATION_JSON)
     public Response viewRegisteredCourses(@NotNull
-                                          @QueryParam("username") String username,
+                                          @QueryParam("studentID") String studentID,
                                           @NotNull
                                           @QueryParam("semesterID")String semesterID)  {
 
         try {
 
-            String studentID = getStudentID(username);
+            //String studentID = getStudentID(username);
             return Response.ok(sro.viewRegisteredCourses(studentID),MediaType.APPLICATION_JSON).build();
         }
         catch(Exception e) {
@@ -178,7 +179,7 @@ public class StudentController {
     @GET
      @Path("/viewavailablecourses")
      @Produces(MediaType.APPLICATION_JSON)
-    public Response viewGradeCard() {
+    public Response viewAvailableCourses() {
         try {
             ArrayList<Course> courseCatalog = sro.viewCourseCatalog();
             return Response.ok(courseCatalog,MediaType.APPLICATION_JSON).build();
@@ -193,12 +194,12 @@ public class StudentController {
      @Path("/viewGradeCard")
      @Produces(MediaType.APPLICATION_JSON)
     public Response viewGradeCard(@NotNull
-                                  @QueryParam("username") String username,
+                                  @QueryParam("studentid") String studentID,
                                   @NotNull
                                   @QueryParam("semesterID")int semesterID) {
         try {
 
-            String studentID = getStudentID(username);
+            //String studentID = getStudentID(username);
             List<Grade> R = sdo.viewReportCard(studentID);
             return Response.ok(R,MediaType.APPLICATION_JSON).build();
         }
@@ -208,7 +209,7 @@ public class StudentController {
     }
 
     //    Get student id from username
-    private String getStudentID(String username)throws Exception{
+    /*private String getStudentID(String username)throws Exception{
 
         String res;
         try {
@@ -217,5 +218,5 @@ public class StudentController {
         } catch (Exception e) {
             throw e;
         }
-    }
+    }*/
 }

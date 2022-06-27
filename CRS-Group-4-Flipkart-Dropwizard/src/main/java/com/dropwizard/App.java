@@ -40,7 +40,7 @@ public class App extends Application<Configuration> {
         e.jersey().register(new com.dropwizard.restcontroller.ProfessorController());
 
 //        Register User Controllers with jersey
-        e.jersey().register(new ApplicationController());
+        e.jersey().register(new com.dropwizard.restcontroller.ApplicationController());
 
 //        Register Student Controllers with jersey
         e.jersey().register(new com.dropwizard.restcontroller.StudentController());
